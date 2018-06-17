@@ -1,43 +1,13 @@
-EESchema Schematic File Version 2
-LIBS:pimodem
-LIBS:power
-LIBS:device
-LIBS:transistors
-LIBS:conn
-LIBS:linear
-LIBS:regul
-LIBS:74xx
-LIBS:cmos4000
-LIBS:adc-dac
-LIBS:memory
-LIBS:xilinx
-LIBS:microcontrollers
-LIBS:dsp
-LIBS:microchip
-LIBS:analog_switches
-LIBS:motorola
-LIBS:texas
-LIBS:intel
-LIBS:audio
-LIBS:interface
-LIBS:digital-audio
-LIBS:philips
-LIBS:display
-LIBS:cypress
-LIBS:siliconi
-LIBS:opto
-LIBS:atmel
-LIBS:contrib
-LIBS:valves
+EESchema Schematic File Version 4
 LIBS:pimodem-cache
 EELAYER 26 0
 EELAYER END
 $Descr A4 11693 8268
 encoding utf-8
 Sheet 1 1
-Title ""
-Date ""
-Rev ""
+Title "PiModem"
+Date "08/10/17"
+Rev "1.0"
 Comp ""
 Comment1 ""
 Comment2 ""
@@ -45,7 +15,7 @@ Comment3 ""
 Comment4 ""
 $EndDescr
 $Comp
-L LTC2951 U1
+L pimodem:LTC2951 U1
 U 1 1 596D4336
 P 5100 2500
 F 0 "U1" H 4800 2850 60  0000 C CNN
@@ -58,7 +28,7 @@ F 5 "LTC2951CTS8-2#TRMPBFCT-ND" H 5100 2500 60  0001 C CNN "Digikey"
 	1    0    0    -1  
 $EndComp
 $Comp
-L GND #PWR01
+L power:GND #PWR01
 U 1 1 597B55C9
 P 850 2350
 F 0 "#PWR01" H 850 2100 50  0001 C CNN
@@ -69,12 +39,12 @@ F 3 "" H 850 2350 50  0000 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L BC857BS Q2
+L Transistor_BJT:BC857BS Q2
 U 1 1 597E9C9D
 P 2550 2850
 F 0 "Q2" H 2350 2750 50  0000 L CNN
 F 1 "BC857BS" H 2200 3000 50  0000 L CNN
-F 2 "TO_SOT_Packages_SMD:SOT-363" H 2750 2950 50  0001 C CNN
+F 2 "Package_TO_SOT_SMD:SOT-363_SC-70-6" H 2750 2950 50  0001 C CNN
 F 3 "https://www.diodes.com/assets/Datasheets/ds30373.pdf" H 2550 2850 50  0001 C CNN
 F 4 "BC857BS-7-F" H 2550 2850 60  0001 C CNN "MFN"
 F 5 "BC857BS-7FDICT-ND" H 2550 2850 60  0001 C CNN "Digikey"
@@ -82,18 +52,18 @@ F 5 "BC857BS-7FDICT-ND" H 2550 2850 60  0001 C CNN "Digikey"
 	-1   0    0    1   
 $EndComp
 $Comp
-L BC857BS Q2
+L Transistor_BJT:BC857BS Q2
 U 2 1 597E9CEC
 P 3350 2850
 F 0 "Q2" H 3100 2750 50  0000 L CNN
 F 1 "BC857BS" H 3550 2800 50  0001 L CNN
-F 2 "TO_SOT_Packages_SMD:SOT-363_SC-70-6" H 3550 2950 50  0001 C CNN
-F 3 "" H 3350 2850 50  0001 C CNN
+F 2 "Package_TO_SOT_SMD:SOT-363_SC-70-6" H 3550 2950 50  0001 C CNN
+F 3 "https://www.diodes.com/assets/Datasheets/ds30373.pdf" H 3350 2850 50  0001 C CNN
 	2    3350 2850
 	1    0    0    1   
 $EndComp
 $Comp
-L GND #PWR02
+L power:GND #PWR02
 U 1 1 597EB2AC
 P 2100 2750
 F 0 "#PWR02" H 2100 2500 50  0001 C CNN
@@ -104,7 +74,7 @@ F 3 "" H 2100 2750 50  0000 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L C_Small C1
+L Device:C_Small C1
 U 1 1 597EB89E
 P 2100 2550
 F 0 "C1" H 2192 2596 50  0000 L CNN
@@ -117,7 +87,7 @@ F 5 "478-1405-1-ND" H 2100 2550 60  0001 C CNN "Digikey"
 	1    0    0    -1  
 $EndComp
 $Comp
-L GND #PWR03
+L power:GND #PWR03
 U 1 1 597EBC5B
 P 4900 3050
 F 0 "#PWR03" H 4900 2800 50  0001 C CNN
@@ -128,7 +98,7 @@ F 3 "" H 4900 3050 50  0000 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L C_Small C3
+L Device:C_Small C3
 U 1 1 597EBE18
 P 5100 3200
 F 0 "C3" H 5000 3300 50  0000 L CNN
@@ -141,7 +111,7 @@ F 5 "399-4925-1-ND" H 5100 3200 60  0001 C CNN "Digikey"
 	1    0    0    -1  
 $EndComp
 $Comp
-L C_Small C4
+L Device:C_Small C4
 U 1 1 597EBF6E
 P 5300 3100
 F 0 "C4" H 5200 3200 50  0000 L CNN
@@ -154,7 +124,7 @@ F 5 "732-8024-1-ND" H 5300 3100 60  0001 C CNN "Digikey"
 	1    0    0    -1  
 $EndComp
 $Comp
-L GND #PWR04
+L power:GND #PWR04
 U 1 1 597EC278
 P 5100 3400
 F 0 "#PWR04" H 5100 3150 50  0001 C CNN
@@ -165,7 +135,7 @@ F 3 "" H 5100 3400 50  0000 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L GND #PWR05
+L power:GND #PWR05
 U 1 1 597EC299
 P 5300 3400
 F 0 "#PWR05" H 5300 3150 50  0001 C CNN
@@ -176,7 +146,7 @@ F 3 "" H 5300 3400 50  0000 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L Polyfuse F1
+L Device:Polyfuse F1
 U 1 1 597EC70F
 P 1800 2300
 F 0 "F1" V 2000 2250 50  0000 C CNN
@@ -193,7 +163,7 @@ Text GLabel 6400 2600 2    60   Input ~ 0
 Text GLabel 6950 2450 2    60   Output ~ 0
 ~INT~
 $Comp
-L R R1
+L Device:R R1
 U 1 1 597EE4F0
 P 2450 3450
 F 0 "R1" H 2520 3496 50  0000 L CNN
@@ -206,7 +176,7 @@ F 5 "311-10.0KCRCT-ND" H 2450 3450 60  0001 C CNN "Digikey"
 	1    0    0    -1  
 $EndComp
 $Comp
-L LTC4360 U2
+L pimodem:LTC4360 U2
 U 1 1 597FC74A
 P 6450 1800
 F 0 "U2" H 6500 2150 60  0000 C CNN
@@ -219,20 +189,20 @@ F 5 "LTC4360ISC8-1#TRMPBFCT-ND" H 6450 1800 60  0001 C CNN "Digikey"
 	1    0    0    -1  
 $EndComp
 $Comp
-L CONN_02X03 J1
+L Connector_Generic:Conn_02x03_Odd_Even J1
 U 1 1 597FD821
-P 1150 2200
-F 0 "J1" H 1150 1875 50  0000 C CNN
-F 1 "PWR_HEADER" H 1150 1966 50  0000 C CNN
-F 2 "Connectors_Molex:Molex_Microfit3_Header_02x03_Straight_43045-0628" H 1150 1000 50  0001 C CNN
-F 3 "http://www.molex.com/pdm_docs/sd/430450628_sd.pdf" H 1150 1000 50  0001 C CNN
-F 4 "43045-0628" H 1150 2200 60  0001 C CNN "MFN"
-F 5 "WM10679-ND" H 1150 2200 60  0001 C CNN "Digikey"
-	1    1150 2200
+P 1200 2200
+F 0 "J1" H 1250 1850 50  0000 C CNN
+F 1 "PWR_HEADER" H 1250 1950 50  0000 C CNN
+F 2 "Connectors_Molex:Molex_Microfit3_Header_02x03_Straight_43045-0628" H 1200 1000 50  0001 C CNN
+F 3 "http://www.molex.com/pdm_docs/sd/430450628_sd.pdf" H 1200 1000 50  0001 C CNN
+F 4 "43045-0628" H 1200 2200 60  0001 C CNN "MFN"
+F 5 "WM10679-ND" H 1200 2200 60  0001 C CNN "Digikey"
+	1    1200 2200
 	-1   0    0    1   
 $EndComp
 $Comp
-L +3V3 #PWR06
+L power:+3V3 #PWR06
 U 1 1 597FE163
 P 6750 3200
 F 0 "#PWR06" H 6750 3050 50  0001 C CNN
@@ -243,7 +213,7 @@ F 3 "" H 6750 3200 50  0001 C CNN
 	-1   0    0    1   
 $EndComp
 $Comp
-L GND #PWR07
+L power:GND #PWR07
 U 1 1 598009B2
 P 2450 3700
 F 0 "#PWR07" H 2450 3450 50  0001 C CNN
@@ -254,7 +224,7 @@ F 3 "" H 2450 3700 50  0000 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L R R2
+L Device:R R2
 U 1 1 598010E8
 P 3450 3450
 F 0 "R2" H 3300 3500 50  0000 L CNN
@@ -267,7 +237,7 @@ F 5 "311-47.0KCRCT-ND" H 3450 3450 60  0001 C CNN "Digikey"
 	1    0    0    -1  
 $EndComp
 $Comp
-L GND #PWR08
+L power:GND #PWR08
 U 1 1 59801482
 P 3450 3700
 F 0 "#PWR08" H 3450 3450 50  0001 C CNN
@@ -278,7 +248,7 @@ F 3 "" H 3450 3700 50  0000 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L +5V #PWR09
+L power:+5V #PWR09
 U 1 1 5980251F
 P 7200 850
 F 0 "#PWR09" H 7200 700 50  0001 C CNN
@@ -289,7 +259,7 @@ F 3 "" H 7200 850 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L C_Small C2
+L Device:C_Small C2
 U 1 1 59802873
 P 4050 2600
 F 0 "C2" H 4142 2646 50  0000 L CNN
@@ -302,7 +272,7 @@ F 5 "445-8239-1-ND" H 4050 2600 60  0001 C CNN "Digikey"
 	1    0    0    -1  
 $EndComp
 $Comp
-L GND #PWR010
+L power:GND #PWR010
 U 1 1 598029DE
 P 4050 2900
 F 0 "#PWR010" H 4050 2650 50  0001 C CNN
@@ -313,7 +283,7 @@ F 3 "" H 4050 2900 50  0000 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L TVS D1
+L pimodem:TVS D1
 U 1 1 598033DC
 P 3700 2600
 F 0 "D1" V 3654 2679 50  0000 L CNN
@@ -326,7 +296,7 @@ F 5 "SMBJ5.0ALFCT-ND" V 3700 2600 60  0001 C CNN "Digikey"
 	0    1    1    0   
 $EndComp
 $Comp
-L GND #PWR011
+L power:GND #PWR011
 U 1 1 598034C3
 P 3700 2900
 F 0 "#PWR011" H 3700 2650 50  0001 C CNN
@@ -337,7 +307,7 @@ F 3 "" H 3700 2900 50  0000 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L GND #PWR012
+L power:GND #PWR012
 U 1 1 5980D0EE
 P 7150 2150
 F 0 "#PWR012" H 7150 1900 50  0001 C CNN
@@ -348,7 +318,7 @@ F 3 "" H 7150 2150 50  0000 C CNN
 	0    -1   -1   0   
 $EndComp
 $Comp
-L R R3
+L Device:R R3
 U 1 1 5980D6DE
 P 6750 2950
 F 0 "R3" H 6600 3000 50  0000 L CNN
@@ -359,7 +329,7 @@ F 3 "" H 6750 2950 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L PWR_FLAG #FLG02
+L power:PWR_FLAG #FLG02
 U 1 1 5980EDA8
 P 850 1800
 F 0 "#FLG02" H 850 1875 50  0001 C CNN
@@ -370,7 +340,7 @@ F 3 "" H 850 1800 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L MAX3237 U4
+L pimodem:MAX3237 U4
 U 1 1 59825CCA
 P 1800 5400
 F 0 "U4" H 1800 6765 50  0000 C CNN
@@ -383,7 +353,7 @@ F 5 "MAX3237EAI+-ND" H 1800 5400 60  0001 C CNN "Digikey"
 	1    0    0    -1  
 $EndComp
 $Comp
-L C_Small C5
+L Device:C_Small C5
 U 1 1 598260A6
 P 850 4400
 F 0 "C5" H 750 4500 50  0000 L CNN
@@ -396,7 +366,7 @@ F 5 "399-7999-1-ND" H 850 4400 60  0001 C CNN "Digikey"
 	1    0    0    -1  
 $EndComp
 $Comp
-L C_Small C6
+L Device:C_Small C6
 U 1 1 5982619E
 P 850 4800
 F 0 "C6" H 750 4900 50  0000 L CNN
@@ -407,7 +377,7 @@ F 3 "" H 850 4800 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L PWR_FLAG #FLG03
+L power:PWR_FLAG #FLG03
 U 1 1 598622E9
 P 6850 850
 F 0 "#FLG03" H 6850 925 50  0001 C CNN
@@ -418,7 +388,7 @@ F 3 "" H 6850 850 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L C_Small C7
+L Device:C_Small C7
 U 1 1 598633AF
 P 3000 4400
 F 0 "C7" V 2850 4400 50  0000 L CNN
@@ -429,7 +399,7 @@ F 3 "" H 3000 4400 50  0001 C CNN
 	0    1    1    0   
 $EndComp
 $Comp
-L C_Small C8
+L Device:C_Small C8
 U 1 1 59863435
 P 2650 4600
 F 0 "C8" V 2500 4650 50  0000 L CNN
@@ -440,7 +410,7 @@ F 3 "" H 2650 4600 50  0001 C CNN
 	0    1    1    0   
 $EndComp
 $Comp
-L GND #PWR014
+L power:GND #PWR014
 U 1 1 59863ADA
 P 2850 4600
 F 0 "#PWR014" H 2850 4350 50  0001 C CNN
@@ -451,20 +421,20 @@ F 3 "" H 2850 4600 50  0001 C CNN
 	0    -1   -1   0   
 $EndComp
 $Comp
-L CONN_02X20 J2
+L Connector_Generic:Conn_02x20_Odd_Even J2
 U 1 1 59867196
-P 9650 2050
-F 0 "J2" H 9650 3215 50  0000 C CNN
-F 1 "PI_HEADER" H 9650 3124 50  0000 C CNN
-F 2 "Socket_Strips:Socket_Strip_Straight_2x20_Pitch2.54mm" H 9650 1100 50  0001 C CNN
-F 3 "http://sullinscorp.com/catalogs/146_PAGE119_.100_SFH11_SERIES_FEMALE_HDR_ST_RA.pdf" H 9650 1100 50  0001 C CNN
-F 4 "SFH11-PBPC-D20-ST-BK" H 9650 2050 60  0001 C CNN "MFN"
-F 5 "S9200-ND" H 9650 2050 60  0001 C CNN "Digikey"
-	1    9650 2050
+P 9600 2000
+F 0 "J2" H 9650 3150 50  0000 C CNN
+F 1 "PI_HEADER" H 9650 3050 50  0000 C CNN
+F 2 "Socket_Strips:Socket_Strip_Straight_2x20_Pitch2.54mm" H 9600 1050 50  0001 C CNN
+F 3 "http://sullinscorp.com/catalogs/146_PAGE119_.100_SFH11_SERIES_FEMALE_HDR_ST_RA.pdf" H 9600 1050 50  0001 C CNN
+F 4 "SFH11-PBPC-D20-ST-BK" H 9600 2000 60  0001 C CNN "MFN"
+F 5 "S9200-ND" H 9600 2000 60  0001 C CNN "Digikey"
+	1    9600 2000
 	1    0    0    -1  
 $EndComp
 $Comp
-L +5V #PWR015
+L power:+5V #PWR015
 U 1 1 59867677
 P 10200 1100
 F 0 "#PWR015" H 10200 950 50  0001 C CNN
@@ -475,7 +445,7 @@ F 3 "" H 10200 1100 50  0001 C CNN
 	0    1    1    0   
 $EndComp
 $Comp
-L +3V3 #PWR016
+L power:+3V3 #PWR016
 U 1 1 59867A2F
 P 9000 1100
 F 0 "#PWR016" H 9000 950 50  0001 C CNN
@@ -486,7 +456,7 @@ F 3 "" H 9000 1100 50  0001 C CNN
 	0    -1   -1   0   
 $EndComp
 $Comp
-L GND #PWR017
+L power:GND #PWR017
 U 1 1 598680D9
 P 9000 1500
 F 0 "#PWR017" H 9000 1250 50  0001 C CNN
@@ -497,7 +467,7 @@ F 3 "" H 9000 1500 50  0001 C CNN
 	0    1    1    0   
 $EndComp
 $Comp
-L GND #PWR018
+L power:GND #PWR018
 U 1 1 59868188
 P 10200 1300
 F 0 "#PWR018" H 10200 1050 50  0001 C CNN
@@ -508,7 +478,7 @@ F 3 "" H 10200 1300 50  0001 C CNN
 	0    -1   -1   0   
 $EndComp
 $Comp
-L +3V3 #PWR019
+L power:+3V3 #PWR019
 U 1 1 59869B5F
 P 2650 6500
 F 0 "#PWR019" H 2650 6350 50  0001 C CNN
@@ -519,7 +489,7 @@ F 3 "" H 2650 6500 50  0001 C CNN
 	0    1    1    0   
 $EndComp
 $Comp
-L GND #PWR020
+L power:GND #PWR020
 U 1 1 59869C78
 P 1050 6300
 F 0 "#PWR020" H 1050 6050 50  0001 C CNN
@@ -530,7 +500,7 @@ F 3 "" H 1050 6300 50  0001 C CNN
 	0    1    1    0   
 $EndComp
 $Comp
-L GND #PWR021
+L power:GND #PWR021
 U 1 1 59869CB6
 P 2600 6300
 F 0 "#PWR021" H 2600 6050 50  0001 C CNN
@@ -541,7 +511,7 @@ F 3 "" H 2600 6300 50  0001 C CNN
 	0    -1   -1   0   
 $EndComp
 $Comp
-L PWR_FLAG #FLG04
+L power:PWR_FLAG #FLG04
 U 1 1 5986B37B
 P 9100 900
 F 0 "#FLG04" H 9100 975 50  0001 C CNN
@@ -561,20 +531,20 @@ RXD
 Text GLabel 1000 5100 0    60   Input ~ 0
 TXD
 $Comp
-L CONN_02X05 J3
+L Connector_Generic:Conn_02x05_Odd_Even J3
 U 1 1 5986E856
-P 3800 5500
-F 0 "J3" H 3800 5800 50  0000 C CNN
+P 3750 5500
+F 0 "J3" H 3800 5100 50  0000 C CNN
 F 1 "SERIAL" H 3800 5200 50  0000 C CNN
-F 2 "Pin_Headers:Pin_Header_Straight_2x05_Pitch2.54mm" H 3800 4300 50  0001 C CNN
-F 3 "http://portal.fciconnect.com/Comergent//fci/drawing/67996.pdf" H 3800 4300 50  0001 C CNN
-F 4 "67997-410HLF" H 3800 5500 60  0001 C CNN "MFN"
-F 5 "609-3243-ND" H 3800 5500 60  0001 C CNN "Digikey"
-	1    3800 5500
+F 2 "Pin_Headers:Pin_Header_Straight_2x05_Pitch2.54mm" H 3750 4300 50  0001 C CNN
+F 3 "http://portal.fciconnect.com/Comergent//fci/drawing/67996.pdf" H 3750 4300 50  0001 C CNN
+F 4 "67997-410HLF" H 3750 5500 60  0001 C CNN "MFN"
+F 5 "609-3243-ND" H 3750 5500 60  0001 C CNN "Digikey"
+	1    3750 5500
 	1    0    0    -1  
 $EndComp
 $Comp
-L +5V #PWR022
+L power:+5V #PWR022
 U 1 1 598718CF
 P 1400 1550
 F 0 "#PWR022" H 1400 1400 50  0001 C CNN
@@ -585,7 +555,7 @@ F 3 "" H 1400 1550 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L R R4
+L Device:R R4
 U 1 1 59872F74
 P 5850 1950
 F 0 "R4" H 5920 1996 50  0000 L CNN
@@ -596,7 +566,7 @@ F 3 "" H 5850 1950 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L CONN_01X07 J4
+L Connector_Generic:Conn_01x07 J4
 U 1 1 59873DFC
 P 10050 3600
 F 0 "J4" H 10128 3641 50  0000 L CNN
@@ -609,7 +579,7 @@ F 5 "A31117-ND" H 10050 3600 60  0001 C CNN "Digikey"
 	1    0    0    -1  
 $EndComp
 $Comp
-L +5V #PWR023
+L power:+5V #PWR023
 U 1 1 598741D1
 P 9550 3900
 F 0 "#PWR023" H 9550 3750 50  0001 C CNN
@@ -620,7 +590,7 @@ F 3 "" H 9550 3900 50  0001 C CNN
 	0    -1   -1   0   
 $EndComp
 $Comp
-L GND #PWR024
+L power:GND #PWR024
 U 1 1 5987420E
 P 9700 3800
 F 0 "#PWR024" H 9700 3550 50  0001 C CNN
@@ -662,7 +632,7 @@ Text GLabel 900  5500 0    60   Input ~ 0
 RI
 NoConn ~ 4050 5700
 $Comp
-L GND #PWR025
+L power:GND #PWR025
 U 1 1 598805E5
 P 3450 5500
 F 0 "#PWR025" H 3450 5250 50  0001 C CNN
@@ -695,45 +665,45 @@ Text GLabel 8700 1400 0    60   Output ~ 0
 Text GLabel 9000 2200 0    60   Input ~ 0
 ~INT~
 $Comp
-L ULN2803A U3
+L Transistor_Array:ULN2803A U3
 U 1 1 5988B5B5
-P 7600 4550
-F 0 "U3" H 7600 5117 50  0000 C CNN
-F 1 "ULN2803A" H 7600 5026 50  0000 C CNN
-F 2 "Housings_SOIC:SOIC-18W_7.5x11.6mm_Pitch1.27mm" H 7650 3900 50  0001 L CNN
-F 3 "http://www.ti.com/lit/ds/symlink/uln2803a.pdf" H 7700 4450 50  0001 C CNN
-F 4 "ULN2803ADWR" H 7600 4550 60  0001 C CNN "MFN"
-F 5 "296-15777-1-ND" H 7600 4550 60  0001 C CNN "Digikey"
-	1    7600 4550
+P 7600 4450
+F 0 "U3" H 7600 5017 50  0000 C CNN
+F 1 "ULN2803A" H 7600 4926 50  0000 C CNN
+F 2 "Housings_SOIC:SOIC-18W_7.5x11.6mm_Pitch1.27mm" H 7650 3800 50  0001 L CNN
+F 3 "http://www.ti.com/lit/ds/symlink/uln2803a.pdf" H 7700 4350 50  0001 C CNN
+F 4 "ULN2803ADWR" H 7600 4450 60  0001 C CNN "MFN"
+F 5 "296-15777-1-ND" H 7600 4450 60  0001 C CNN "Digikey"
+	1    7600 4450
 	1    0    0    -1  
 $EndComp
-NoConn ~ 8000 5050
+NoConn ~ 8000 4150
 $Comp
-L GND #PWR026
+L power:GND #PWR026
 U 1 1 5987C891
-P 7600 5350
-F 0 "#PWR026" H 7600 5100 50  0001 C CNN
-F 1 "GND" H 7605 5177 50  0000 C CNN
-F 2 "" H 7600 5350 50  0001 C CNN
-F 3 "" H 7600 5350 50  0001 C CNN
-	1    7600 5350
+P 7600 5250
+F 0 "#PWR026" H 7600 5000 50  0001 C CNN
+F 1 "GND" H 7605 5077 50  0000 C CNN
+F 2 "" H 7600 5250 50  0001 C CNN
+F 3 "" H 7600 5250 50  0001 C CNN
+	1    7600 5250
 	1    0    0    -1  
 $EndComp
 $Comp
-L CONN_02X05 J5
+L Connector_Generic:Conn_02x05_Odd_Even J5
 U 1 1 5988A04C
-P 8950 4650
-F 0 "J5" H 8950 4950 50  0000 C CNN
-F 1 "LED_PANEL" H 8950 4350 50  0000 C CNN
-F 2 "Pin_Headers:Pin_Header_Straight_2x05_Pitch2.54mm" H 8950 3450 50  0001 C CNN
-F 3 "http://portal.fciconnect.com/Comergent//fci/drawing/67996.pdf" H 8950 3450 50  0001 C CNN
-F 4 "67997-410HLF" H 8950 4650 60  0001 C CNN "MFN"
-F 5 "609-3243-ND" H 8950 4650 60  0001 C CNN "Digikey"
-	1    8950 4650
+P 8950 4700
+F 0 "J5" H 9000 5000 50  0000 C CNN
+F 1 "LED_PANEL" H 9000 4400 50  0000 C CNN
+F 2 "Pin_Headers:Pin_Header_Straight_2x05_Pitch2.54mm" H 8950 3500 50  0001 C CNN
+F 3 "http://portal.fciconnect.com/Comergent//fci/drawing/67996.pdf" H 8950 3500 50  0001 C CNN
+F 4 "67997-410HLF" H 8950 4700 60  0001 C CNN "MFN"
+F 5 "609-3243-ND" H 8950 4700 60  0001 C CNN "Digikey"
+	1    8950 4700
 	0    -1   -1   0   
 $EndComp
 $Comp
-L GND #PWR027
+L power:GND #PWR027
 U 1 1 5988A7B2
 P 8750 5200
 F 0 "#PWR027" H 8750 4950 50  0001 C CNN
@@ -744,7 +714,7 @@ F 3 "" H 8750 5200 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L +5V #PWR028
+L power:+5V #PWR028
 U 1 1 5988A7F7
 P 9150 4250
 F 0 "#PWR028" H 9150 4100 50  0001 C CNN
@@ -775,7 +745,7 @@ NoConn ~ 10850 5000
 NoConn ~ 10850 5500
 NoConn ~ 10850 6000
 $Comp
-L GND #PWR029
+L power:GND #PWR029
 U 1 1 59891422
 P 9850 6250
 F 0 "#PWR029" H 9850 6000 50  0001 C CNN
@@ -811,7 +781,7 @@ NoConn ~ 8350 6000
 NoConn ~ 8350 6150
 NoConn ~ 8350 6300
 $Comp
-L 74LS04 U5
+L pimodem:74LS04 U5
 U 1 1 59888443
 P 6500 5550
 F 0 "U5" V 6550 5400 50  0000 R CNN
@@ -824,7 +794,7 @@ F 5 "296-14875-1-ND" V 6500 5550 60  0001 C CNN "Digikey"
 	0    -1   -1   0   
 $EndComp
 $Comp
-L 74LS04 U5
+L pimodem:74LS04 U5
 U 2 1 5988894F
 P 7050 5550
 F 0 "U5" V 7096 5372 50  0000 R CNN
@@ -835,7 +805,7 @@ F 3 "" H 7050 5550 50  0001 C CNN
 	0    -1   -1   0   
 $EndComp
 $Comp
-L 74LS04 U5
+L pimodem:74LS04 U5
 U 3 1 59888F40
 P 10400 4500
 F 0 "U5" H 10400 4815 50  0000 C CNN
@@ -846,7 +816,7 @@ F 3 "" H 10400 4500 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L 74LS04 U5
+L pimodem:74LS04 U5
 U 4 1 5988939F
 P 10400 5000
 F 0 "U5" H 10400 5315 50  0000 C CNN
@@ -857,7 +827,7 @@ F 3 "" H 10400 5000 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L 74LS04 U5
+L pimodem:74LS04 U5
 U 5 1 59889407
 P 10400 5500
 F 0 "U5" H 10400 5815 50  0000 C CNN
@@ -868,7 +838,7 @@ F 3 "" H 10400 5500 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L 74LS04 U5
+L pimodem:74LS04 U5
 U 6 1 5988946B
 P 10400 6000
 F 0 "U5" H 10400 6315 50  0000 C CNN
@@ -879,7 +849,7 @@ F 3 "" H 10400 6000 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L 24LC32 U6
+L Memory_EEPROM:24LC32 U6
 U 1 1 598902DA
 P 3750 7050
 F 0 "U6" H 3600 6800 50  0000 C CNN
@@ -892,7 +862,7 @@ F 5 "CAT24C32WI-GOS-ND" H 3750 7050 60  0001 C CNN "Digikey"
 	1    0    0    -1  
 $EndComp
 $Comp
-L GND #PWR030
+L power:GND #PWR030
 U 1 1 5989095A
 P 3750 7450
 F 0 "#PWR030" H 3750 7200 50  0001 C CNN
@@ -903,7 +873,7 @@ F 3 "" H 3750 7450 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L C_Small C9
+L Device:C_Small C9
 U 1 1 59891D71
 P 3550 6550
 F 0 "C9" V 3400 6500 50  0000 L CNN
@@ -914,7 +884,7 @@ F 3 "" H 3550 6550 50  0001 C CNN
 	0    1    1    0   
 $EndComp
 $Comp
-L GND #PWR031
+L power:GND #PWR031
 U 1 1 598922D6
 P 3350 6550
 F 0 "#PWR031" H 3350 6300 50  0001 C CNN
@@ -925,7 +895,7 @@ F 3 "" H 3350 6550 50  0001 C CNN
 	0    1    1    0   
 $EndComp
 $Comp
-L +3V3 #PWR032
+L power:+3V3 #PWR032
 U 1 1 598928FC
 P 3750 6500
 F 0 "#PWR032" H 3750 6350 50  0001 C CNN
@@ -936,7 +906,7 @@ F 3 "" H 3750 6500 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L R R5
+L Device:R R5
 U 1 1 59892F4A
 P 5450 6700
 F 0 "R5" H 5520 6746 50  0000 L CNN
@@ -949,7 +919,7 @@ F 5 "311-1.00KCRCT-ND" H 5450 6700 60  0001 C CNN "Digikey"
 	1    0    0    -1  
 $EndComp
 $Comp
-L R R6
+L Device:R R6
 U 1 1 59893238
 P 4450 6700
 F 0 "R6" H 4520 6746 50  0000 L CNN
@@ -962,7 +932,7 @@ F 5 "RMCF0805FT3K90CT-ND" H 4450 6700 60  0001 C CNN "Digikey"
 	1    0    0    -1  
 $EndComp
 $Comp
-L R R7
+L Device:R R7
 U 1 1 598932AC
 P 4950 6700
 F 0 "R7" H 5020 6746 50  0000 L CNN
@@ -977,20 +947,20 @@ ID_SC
 Text GLabel 5650 6950 2    60   UnSpc ~ 0
 ID_SD
 $Comp
-L CONN_01X02 J6
+L Connector_Generic:Conn_01x02 J6
 U 1 1 59896620
-P 5650 7350
-F 0 "J6" H 5728 7391 50  0000 L CNN
-F 1 "WP" H 5728 7300 50  0000 L CNN
-F 2 "Pin_Headers:Pin_Header_Straight_1x02_Pitch2.54mm" H 5650 7350 50  0001 C CNN
-F 3 "https://cdn.harwin.com/pdfs/M20-999.pdf" H 5650 7350 50  0001 C CNN
-F 4 "M20-9990246" H 5650 7350 60  0001 C CNN "MFN"
-F 5 "952-2262-ND" H 5650 7350 60  0001 C CNN "Digikey"
-	1    5650 7350
+P 5650 7300
+F 0 "J6" H 5750 7300 50  0000 L CNN
+F 1 "WP" H 5750 7200 50  0000 L CNN
+F 2 "Pin_Headers:Pin_Header_Straight_1x02_Pitch2.54mm" H 5650 7300 50  0001 C CNN
+F 3 "https://cdn.harwin.com/pdfs/M20-999.pdf" H 5650 7300 50  0001 C CNN
+F 4 "M20-9990246" H 5650 7300 60  0001 C CNN "MFN"
+F 5 "952-2262-ND" H 5650 7300 60  0001 C CNN "Digikey"
+	1    5650 7300
 	1    0    0    -1  
 $EndComp
 $Comp
-L GND #PWR033
+L power:GND #PWR033
 U 1 1 59897078
 P 5450 7450
 F 0 "#PWR033" H 5450 7200 50  0001 C CNN
@@ -1005,7 +975,7 @@ ID_SD
 Text GLabel 10450 2400 2    60   UnSpc ~ 0
 ID_SC
 $Comp
-L Q_PMOS_GSD Q1
+L Device:Q_PMOS_GSD Q1
 U 1 1 5989C5E5
 P 3050 2150
 F 0 "Q1" V 3000 2300 50  0000 C CNN
@@ -1018,7 +988,7 @@ F 5 "DMG2305UX-13DICT-ND" V 3050 2150 60  0001 C CNN "Digikey"
 	0    -1   -1   0   
 $EndComp
 $Comp
-L Q_NMOS_GSD Q3
+L Device:Q_NMOS_GSD Q3
 U 1 1 5989CF2E
 P 6400 1100
 F 0 "Q3" V 6743 1100 50  0000 C CNN
@@ -1030,16 +1000,10 @@ F 5 "DMG3414U-7DICT-ND" V 6400 1100 60  0001 C CNN "Digikey"
 	1    6400 1100
 	0    -1   -1   0   
 $EndComp
-Text Notes 10600 7650 0    60   ~ 0
-1.0\n
-Text Notes 8150 7650 0    60   ~ 0
-8-10-17
-Text Notes 7400 7500 0    60   ~ 0
-PiModem
 Text GLabel 8000 5850 0    60   UnSpc ~ 0
 DCD
 $Comp
-L GND #PWR013
+L power:GND #PWR013
 U 1 1 598DB0E8
 P 3250 4400
 F 0 "#PWR013" H 3250 4150 50  0001 C CNN
@@ -1050,7 +1014,7 @@ F 3 "" H 3250 4400 50  0001 C CNN
 	0    -1   -1   0   
 $EndComp
 $Comp
-L R R8
+L Device:R R8
 U 1 1 598DB50F
 P 8050 3600
 F 0 "R8" V 7950 3600 50  0000 C CNN
@@ -1063,7 +1027,7 @@ F 5 "311-100KCRCT-ND" V 8050 3600 60  0001 C CNN "Digikey"
 	0    1    1    0   
 $EndComp
 $Comp
-L R R9
+L Device:R R9
 U 1 1 598DB6CD
 P 8050 3700
 F 0 "R9" V 8150 3700 50  0000 C CNN
@@ -1074,20 +1038,20 @@ F 3 "" H 8050 3700 50  0001 C CNN
 	0    1    1    0   
 $EndComp
 $Comp
-L CONN_02X04 J7
+L Connector_Generic:Conn_02x04_Odd_Even J7
 U 1 1 598E0AB7
-P 8550 3650
-F 0 "J7" H 8550 3275 50  0000 C CNN
-F 1 "GAIN" H 8550 3366 50  0000 C CNN
-F 2 "Pin_Headers:Pin_Header_Straight_2x04_Pitch2.54mm" H 8550 2450 50  0001 C CNN
-F 3 "http://portal.fciconnect.com/Comergent//fci/drawing/67996.pdf" H 8550 2450 50  0001 C CNN
-F 4 "67996-408HLF" H 8550 3650 60  0001 C CNN "MFN"
-F 5 "609-3391-ND" H 8550 3650 60  0001 C CNN "Digikey"
-	1    8550 3650
+P 8600 3700
+F 0 "J7" H 8650 3300 50  0000 C CNN
+F 1 "GAIN" H 8650 3400 50  0000 C CNN
+F 2 "Pin_Headers:Pin_Header_Straight_2x04_Pitch2.54mm" H 8600 2500 50  0001 C CNN
+F 3 "http://portal.fciconnect.com/Comergent//fci/drawing/67996.pdf" H 8600 2500 50  0001 C CNN
+F 4 "67996-408HLF" H 8600 3700 60  0001 C CNN "MFN"
+F 5 "609-3391-ND" H 8600 3700 60  0001 C CNN "Digikey"
+	1    8600 3700
 	-1   0    0    1   
 $EndComp
 $Comp
-L +5V #PWR034
+L power:+5V #PWR034
 U 1 1 598E1BF3
 P 7800 3800
 F 0 "#PWR034" H 7800 3650 50  0001 C CNN
@@ -1098,7 +1062,7 @@ F 3 "" H 7800 3800 50  0001 C CNN
 	0    -1   -1   0   
 $EndComp
 $Comp
-L GND #PWR035
+L power:GND #PWR035
 U 1 1 598E1C52
 P 7800 3500
 F 0 "#PWR035" H 7800 3250 50  0001 C CNN
@@ -1113,7 +1077,7 @@ NoConn ~ 9900 2300
 Wire Wire Line
 	850  2200 900  2200
 Wire Wire Line
-	850  1800 850  2350
+	850  1800 850  2100
 Wire Wire Line
 	900  2100 850  2100
 Connection ~ 850  2200
@@ -1133,7 +1097,7 @@ Wire Wire Line
 	900  2300 850  2300
 Connection ~ 850  2300
 Wire Wire Line
-	1950 2300 2650 2300
+	1950 2300 2100 2300
 Wire Wire Line
 	2100 2300 2100 2450
 Wire Wire Line
@@ -1149,16 +1113,16 @@ Wire Wire Line
 	2450 2650 2450 2300
 Connection ~ 2450 2300
 Wire Wire Line
-	2450 3050 2450 3300
+	2450 3050 2450 3200
 Wire Wire Line
 	2450 3200 2950 3200
 Wire Wire Line
-	2750 2850 3150 2850
+	2750 2850 2950 2850
 Connection ~ 2450 3200
 Wire Wire Line
 	2450 3600 2450 3700
 Wire Wire Line
-	3450 3050 3450 3300
+	3450 3050 3450 3200
 Wire Wire Line
 	2950 3200 2950 2850
 Connection ~ 2950 2850
@@ -1172,11 +1136,11 @@ Wire Wire Line
 Wire Wire Line
 	3250 2050 3450 2050
 Wire Wire Line
-	3450 2050 3450 2650
+	3450 2050 3450 2300
 Wire Wire Line
-	3450 2300 4500 2300
+	3450 2300 3700 2300
 Wire Wire Line
-	4050 2150 4050 2500
+	4050 2150 4050 2300
 Connection ~ 3450 2300
 Connection ~ 4050 2300
 Wire Wire Line
@@ -1209,11 +1173,11 @@ Wire Wire Line
 Wire Wire Line
 	5850 2300 5750 2300
 Wire Wire Line
-	5850 2100 5850 2300
+	5850 2100 5850 2150
 Wire Wire Line
 	5850 2150 5950 2150
 Wire Wire Line
-	4600 1750 5950 1750
+	4600 1750 5600 1750
 Wire Wire Line
 	4600 1750 4600 2150
 Wire Wire Line
@@ -1224,9 +1188,9 @@ Wire Wire Line
 	5600 1000 5600 1750
 Connection ~ 5600 1750
 Wire Wire Line
-	6600 1000 7200 1000
+	6600 1000 6850 1000
 Wire Wire Line
-	7200 850  7200 1750
+	7200 850  7200 1000
 Wire Wire Line
 	7200 1750 6900 1750
 Connection ~ 7200 1000
@@ -1238,7 +1202,7 @@ Connection ~ 6750 2450
 Wire Wire Line
 	6750 3200 6750 3100
 Wire Wire Line
-	5750 2450 6950 2450
+	5750 2450 6750 2450
 Wire Wire Line
 	850  4300 1200 4300
 Wire Wire Line
@@ -1260,7 +1224,7 @@ Wire Wire Line
 Wire Wire Line
 	2900 4400 2400 4400
 Wire Wire Line
-	9900 1100 10200 1100
+	9900 1100 10050 1100
 Wire Wire Line
 	9900 1200 10050 1200
 Wire Wire Line
@@ -1269,10 +1233,10 @@ Connection ~ 10050 1100
 Wire Wire Line
 	9100 1900 9400 1900
 Wire Wire Line
-	9100 900  9100 1900
+	9100 900  9100 1100
 Connection ~ 9100 1100
 Wire Wire Line
-	9900 1300 10200 1300
+	9900 1300 10150 1300
 Wire Wire Line
 	2400 6500 2650 6500
 Wire Wire Line
@@ -1282,7 +1246,7 @@ Wire Wire Line
 Wire Wire Line
 	9900 1700 10150 1700
 Wire Wire Line
-	10150 1300 10150 2700
+	10150 1300 10150 1700
 Connection ~ 10150 1300
 Wire Wire Line
 	10150 2000 9900 2000
@@ -1294,11 +1258,11 @@ Wire Wire Line
 	10150 2700 9900 2700
 Connection ~ 10150 2500
 Wire Wire Line
-	9000 1500 9400 1500
+	9000 1500 9150 1500
 Wire Wire Line
 	9400 2300 9150 2300
 Wire Wire Line
-	9150 1500 9150 3000
+	9150 1500 9150 2300
 Connection ~ 9150 1500
 Wire Wire Line
 	9150 3000 9400 3000
@@ -1408,7 +1372,7 @@ Wire Wire Line
 Wire Wire Line
 	8700 1400 9400 1400
 Wire Wire Line
-	7600 5350 7600 5250
+	7600 5250 7600 5150
 Wire Wire Line
 	8000 4250 8750 4250
 Wire Wire Line
@@ -1486,7 +1450,7 @@ Wire Wire Line
 Wire Wire Line
 	6750 4750 7200 4750
 Wire Wire Line
-	9850 4500 9850 6250
+	9850 4500 9850 5000
 Wire Wire Line
 	9850 4500 9950 4500
 Wire Wire Line
@@ -1519,29 +1483,29 @@ Wire Wire Line
 Wire Wire Line
 	9050 2000 9400 2000
 Wire Wire Line
-	3750 7350 3750 7450
+	3750 7350 3750 7400
 Wire Wire Line
-	3350 6950 3350 7400
+	3350 6950 3350 7050
 Connection ~ 3350 7050
 Wire Wire Line
 	3350 7400 3750 7400
 Connection ~ 3750 7400
 Connection ~ 3350 7150
 Wire Wire Line
-	3750 6500 3750 6750
+	3750 6500 3750 6550
 Wire Wire Line
 	3450 6550 3350 6550
 Wire Wire Line
-	3650 6550 5450 6550
+	3650 6550 3750 6550
 Connection ~ 3750 6550
 Connection ~ 4450 6550
 Connection ~ 4950 6550
 Wire Wire Line
-	4150 6950 5650 6950
+	4150 6950 4450 6950
 Wire Wire Line
 	4450 6950 4450 6850
 Wire Wire Line
-	4150 7050 5950 7050
+	4150 7050 4950 7050
 Wire Wire Line
 	4950 7050 4950 6850
 Connection ~ 4950 7050
@@ -1549,7 +1513,7 @@ Connection ~ 4450 6950
 Wire Wire Line
 	4150 7150 5450 7150
 Wire Wire Line
-	5450 6850 5450 7300
+	5450 6850 5450 7150
 Connection ~ 5450 7150
 Wire Wire Line
 	5450 7450 5450 7400
@@ -1560,15 +1524,11 @@ Wire Wire Line
 Wire Wire Line
 	8000 5850 8350 5850
 Wire Wire Line
-	8800 3500 8800 3800
-Connection ~ 8800 3700
-Connection ~ 8800 3600
-Wire Wire Line
 	9850 3600 8800 3600
 Wire Wire Line
-	7800 3500 8300 3500
+	7800 3500 7850 3500
 Wire Wire Line
-	7800 3800 8300 3800
+	7800 3800 7850 3800
 Wire Wire Line
 	7850 3700 7850 3800
 Connection ~ 7850 3800
@@ -1587,4 +1547,94 @@ Wire Wire Line
 	9100 1100 9000 1100
 Wire Wire Line
 	9000 2200 9400 2200
+Wire Wire Line
+	850  2200 850  2300
+Wire Wire Line
+	850  2300 850  2350
+Wire Wire Line
+	2100 2300 2450 2300
+Wire Wire Line
+	2450 2300 2650 2300
+Wire Wire Line
+	2450 3200 2450 3300
+Wire Wire Line
+	2950 2850 3150 2850
+Wire Wire Line
+	3450 3200 3450 3300
+Wire Wire Line
+	3450 2300 3450 2650
+Wire Wire Line
+	4050 2300 4500 2300
+Wire Wire Line
+	4050 2300 4050 2500
+Wire Wire Line
+	3700 2300 4050 2300
+Wire Wire Line
+	5600 1750 5850 1750
+Wire Wire Line
+	7200 1000 7200 1750
+Wire Wire Line
+	6750 2450 6950 2450
+Wire Wire Line
+	6850 1000 7200 1000
+Wire Wire Line
+	850  2100 850  2200
+Wire Wire Line
+	10050 1100 10200 1100
+Wire Wire Line
+	9100 1100 9100 1900
+Wire Wire Line
+	10150 1300 10200 1300
+Wire Wire Line
+	10150 1700 10150 2000
+Wire Wire Line
+	10150 2000 10150 2500
+Wire Wire Line
+	10150 2500 10150 2700
+Wire Wire Line
+	9150 1500 9400 1500
+Wire Wire Line
+	9150 2300 9150 3000
+Wire Wire Line
+	5850 2150 5850 2300
+Wire Wire Line
+	5850 1750 5950 1750
+Wire Wire Line
+	9850 5000 9850 5500
+Wire Wire Line
+	9850 5500 9850 6000
+Wire Wire Line
+	9850 6000 9850 6250
+Wire Wire Line
+	3350 7050 3350 7150
+Wire Wire Line
+	3750 7400 3750 7450
+Wire Wire Line
+	3350 7150 3350 7400
+Wire Wire Line
+	3750 6550 3750 6750
+Wire Wire Line
+	3750 6550 4450 6550
+Wire Wire Line
+	4450 6550 4950 6550
+Wire Wire Line
+	4950 6550 5450 6550
+Wire Wire Line
+	4950 7050 5950 7050
+Wire Wire Line
+	4450 6950 5650 6950
+Wire Wire Line
+	5450 7150 5450 7300
+Wire Wire Line
+	7850 3800 8300 3800
+Wire Wire Line
+	7850 3500 8300 3500
+Wire Wire Line
+	8800 3500 8800 3600
+Connection ~ 8800 3600
+Wire Wire Line
+	8800 3700 8800 3600
+Wire Wire Line
+	8800 3800 8800 3700
+Connection ~ 8800 3700
 $EndSCHEMATC

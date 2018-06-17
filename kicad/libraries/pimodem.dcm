@@ -1,7 +1,7 @@
 EESchema-DOCLIB  Version 2.0
 #
 $CMP 74LS04
-D Hex Inverseur
+D Hex Inverter
 K TTL not inv
 $ENDCMP
 #
@@ -9,14 +9,8 @@ $CMP CONN_02X20
 D Connector 02x20
 $ENDCMP
 #
-$CMP D_TVS
-D unidirectional transient-voltage-suppression (TVS) diode
-K diode TVS thyrector
-F https://en.wikipedia.org/wiki/Transient-voltage-suppression_diode
-$ENDCMP
-#
-$CMP PI_HEADER
-D Connector 02x20
+$CMP MAX3237
+D 3.0V to 5.5V, Low-Power, up to 1Mbps, True RS-232 Transceiver
 $ENDCMP
 #
 $CMP TVS
