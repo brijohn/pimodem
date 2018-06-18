@@ -9,6 +9,22 @@ $CMP CONN_02X20
 D Connector 02x20
 $ENDCMP
 #
+$CMP LTC2951
+D Push button ON/OFF controller
+$ENDCMP
+#
+$CMP LTC2951-2
+D Push button ON/OFF controller
+$ENDCMP
+#
+$CMP LTC4360
+D Overvoltage Protection Controller
+$ENDCMP
+#
+$CMP LTC4360-1
+D Overvoltage Protection Controller
+$ENDCMP
+#
 $CMP MAX3237
 D 3.0V to 5.5V, Low-Power, up to 1Mbps, True RS-232 Transceiver
 $ENDCMP
