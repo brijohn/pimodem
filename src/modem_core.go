@@ -74,6 +74,7 @@ func (mdm *Modem) sendResponse(e error) {
 			}
 			mdm.sendCRLF()
 		}
+		logger.Info().Err(r).Uint("code", uint(r.code)).Str("response", r.Response()).Msg("Modem Response")
 	}
 }
 
@@ -85,13 +86,13 @@ func (mdm *Modem) setDataMode(enable bool) {
 		guardTime := time.Duration(mdm.readRegister(RegEscapeSeqGuardTime))
 		mdm.clock.SetDuration(InactivityTimer, time.Second*(timeout*10))
 		mdm.clock.SetDuration(GuardTimer, time.Millisecond*(guardTime*20))
-		fmt.Println("Entering Datamode")
+		logger.Debug().Msg("Entering Datamode")
 	} else {
 		mdm.CommandMode = true
 		mdm.line.Pause(true)
 		mdm.clock.SetDuration(GuardTimer, 0)
 		mdm.clock.SetDuration(InactivityTimer, 0)
-		fmt.Println("Leaving Datamode")
+		logger.Debug().Msg("Leaving Datamode")
 	}
 }
 
@@ -135,15 +136,14 @@ func (mdm *Modem) handleCommandInput(input []byte) {
 		}
 		if string(mdm.ATHeader[:]) == "AT" || string(mdm.ATHeader[:]) == "at" {
 			if char == mdm.readRegister(RegCarriageReturnChar) {
-				fmt.Printf("Evalulating %s%s\n", mdm.ATHeader, mdm.Command)
 				mdm.LastCommand = append([]byte{}, mdm.Command...)
+				logger.Info().Str("command", fmt.Sprintf("AT%s", mdm.Command)).Msg("Processing AT command")
 				handler, err := mdm.Parse()
 				for handler != nil {
 					handler, err = handler(mdm)
 				}
 				mdm.sendCRLF()
 				mdm.sendResponse(err)
-				fmt.Printf("%s\n", err.Error())
 				mdm.Command = make([]byte, 0)
 				mdm.ATHeader = [2]byte{0, 0}
 			} else if char == mdm.readRegister(RegBackspaceChar) {
@@ -170,13 +170,13 @@ func (mdm *Modem) handleCommandInput(input []byte) {
 				fallthrough
 			case mdm.ATHeader[0] == 'a' && char == '/':
 				mdm.Command = append([]byte{}, mdm.LastCommand...)
+				logger.Info().Str("command", fmt.Sprintf("AT%s", mdm.Command)).Msg("Processing AT command")
 				handler, err := mdm.Parse()
 				for handler != nil {
 					handler, err = handler(mdm)
 				}
 				mdm.sendCRLF()
 				mdm.sendResponse(err)
-				fmt.Printf("%s\n", err.Error())
 				mdm.Command = make([]byte, 0)
 				mdm.ATHeader = [2]byte{0, 0}
 			default:
@@ -188,8 +188,9 @@ func (mdm *Modem) handleCommandInput(input []byte) {
 }
 
 func (mdm *Modem) Start() {
+	logger.Info().Str("version", version).Msg("Starting PiModem")
+	logger.Info().Str("date", buildDate).Str("commit", gitCommit).Msg("Build")
 	go mdm.readSerial()
-	fmt.Println("Starting Modem")
 	for {
 		select {
 		case <-mdm.clock.GetTimer(InactivityTimer):
@@ -207,7 +208,7 @@ func (mdm *Modem) Start() {
 			} else {
 				mdm.resetInactivityTimer()
 				mdm.line.Write(bytes)
-				if mdm.guardExpired || (mdm.breakCount > 0) {
+				if mdm.guardExpired || (mdm.breakCount > 0 && len(bytes) <= 3-mdm.breakCount) {
 					for _, ch := range bytes {
 						if ch != mdm.readRegister(RegEscapeSeqChar) {
 							mdm.breakCount = 0
@@ -218,18 +219,18 @@ func (mdm *Modem) Start() {
 				}
 				mdm.resetGuardTimer()
 			}
-			fmt.Printf("%d bytes recieved %x\n", len(bytes), bytes)
+			logger.Debug().Hex("data", bytes).Msgf("%d bytes recieved on serial", len(bytes))
 		case bytes := <-mdm.line.Data:
-			fmt.Printf("%d bytes recieved from remote %x\n", len(bytes), bytes)
+			logger.Debug().Hex("data", bytes).Msgf("%d bytes recieved over tcp", len(bytes))
 			mdm.resetInactivityTimer()
 			mdm.serial.Write(bytes)
 		case response := <-mdm.line.Response:
-			mdm.sendResponse(NewResponse(response, ""))
-			if response == Connect {
+			mdm.sendResponse(response)
+			if response.code == Connect {
 				mdm.setDataMode(true)
-			} else if response == NoCarrier {
+			} else if response.code == NoCarrier {
 				mdm.setDataMode(false)
-			} else if response == Ring {
+			} else if response.code == Ring {
 				autoAnswer := mdm.readRegister(RegAutoAnswer)
 				if autoAnswer > 0 {
 					ringCount := mdm.readRegister(RegRingCount) + 1

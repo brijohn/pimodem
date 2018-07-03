@@ -58,7 +58,7 @@ func (mdm *Modem) Parse() (HandlerFunc, error) {
 	var ct = Normal
 	var cmd byte
 	if len(mdm.Command) == 0 {
-		return nil, NewResponse(Ok, "")
+		return nil, NewResponse(Ok, "Command Successful")
 	}
 	cmd, mdm.Command = mdm.Command[0], mdm.Command[1:]
 	switch cmd {
@@ -132,7 +132,7 @@ func DialHandler(mdm *Modem) (HandlerFunc, error) {
 		}
 		mdm.setDataMode(true)
 	}
-	return nil, NewResponse(Connect, "FIXME")
+	return nil, NewResponse(Connect, "Connecting to remote host")
 }
 
 func AnswerHandler(mdm *Modem) (HandlerFunc, error) {

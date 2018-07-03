@@ -17,7 +17,7 @@ type Line struct {
 	net.Listener
 
 	Data     chan []byte
-	Response chan ModemResponse
+	Response chan *ModemResponseError
 
 	state    int
 	paused   bool
@@ -32,7 +32,7 @@ func NewLine(address string) (*Line, error) {
 	conn.raw = false
 	conn.paused = true
 	conn.Data = make(chan []byte)
-	conn.Response = make(chan ModemResponse)
+	conn.Response = make(chan *ModemResponseError)
 	conn.Listener, err = net.Listen("tcp", address)
 	if err != nil {
 		return nil, err
@@ -60,7 +60,7 @@ func (l *Line) readRemote() {
 				}
 			} else {
 				time.Sleep(time.Millisecond * 100)
-				l.Response <- NoCarrier
+				l.Response <- NewResponse(NoCarrier, err.Error())
 				break
 			}
 		} else {
@@ -95,18 +95,18 @@ accept:
 			conn.Close()
 		} else {
 			if l.answerCall(conn) {
-				l.Response <- Connect
+				l.Response <- NewResponse(Connect, "Connecting to remote host")
 				continue accept
 			}
 			for r := 0; r < 15; r++ {
 				playAudio("ring.wav", nil)
-				l.Response <- Ring
+				l.Response <- NewResponse(Ring, "Phone ringing; Incoming call")
 				d := 0
 				for d < 4000 {
 					time.Sleep(20 * time.Millisecond)
 					d += 20
 					if l.answerCall(conn) {
-						l.Response <- Connect
+						l.Response <- NewResponse(Connect, "Connecting to remote host")
 						continue accept
 					}
 				}

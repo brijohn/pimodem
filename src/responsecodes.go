@@ -58,33 +58,33 @@ type ModemResponseError struct {
 func NewConnectResponseFromSpeed(speed int) error {
 	switch speed {
 	case 600:
-		return NewResponse(Connect600, "Connecting at %d bps", speed)
+		return NewResponse(Connect600, "Connecting to remote host @ %d bps", speed)
 	case 1200:
-		return NewResponse(Connect1200, "Connecting at %d bps", speed)
+		return NewResponse(Connect1200, "Connecting to remote host @ %d bps", speed)
 	case 2400:
-		return NewResponse(Connect2400, "Connecting at %d bps", speed)
+		return NewResponse(Connect2400, "Connecting to remote host @ %d bps", speed)
 	case 4800:
-		return NewResponse(Connect4800, "Connecting at %d bps", speed)
+		return NewResponse(Connect4800, "Connecting to remote host @ %d bps", speed)
 	case 9600:
-		return NewResponse(Connect9600, "Connecting at %d bps", speed)
+		return NewResponse(Connect9600, "Connecting to remote host @ %d bps", speed)
 	case 12000:
-		return NewResponse(Connect12000, "Connecting at %d bps", speed)
+		return NewResponse(Connect12000, "Connecting to remote host @ %d bps", speed)
 	case 14400:
-		return NewResponse(Connect14400, "Connecting at %d bps", speed)
+		return NewResponse(Connect14400, "Connecting to remote host @ %d bps", speed)
 	case 19200:
-		return NewResponse(Connect19200, "Connecting at %d bps", speed)
+		return NewResponse(Connect19200, "Connecting to remote host @ %d bps", speed)
 	case 38400:
-		return NewResponse(Connect38400, "Connecting at %d bps", speed)
+		return NewResponse(Connect38400, "Connecting to remote host @ %d bps", speed)
 	case 57600:
-		return NewResponse(Connect57600, "Connecting at %d bps", speed)
+		return NewResponse(Connect57600, "Connecting to remote host @ %d bps", speed)
 	case 115200:
-		return NewResponse(Connect115200, "Connecting at %d bps", speed)
+		return NewResponse(Connect115200, "Connecting to remote host @ %d bps", speed)
 	default:
-		return NewResponse(Connect, "Connecting")
+		return NewResponse(Connect, "Connecting to remote host")
 	}
 }
 
-func NewResponse(code ModemResponse, msg string, param ...interface{}) error {
+func NewResponse(code ModemResponse, msg string, param ...interface{}) *ModemResponseError {
 	return &ModemResponseError{code, fmt.Sprintf(msg, param...)}
 }
 

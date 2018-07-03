@@ -35,6 +35,14 @@
 
 [[constraint]]
   branch = "master"
+  name = "github.com/rs/zerolog"
+
+[[constraint]]
+  branch = "master"
+  name = "github.com/coreos/go-systemd"
+
+[[constraint]]
+  branch = "master"
   name = "github.com/mkideal/cli"
 
 [[constraint]]
