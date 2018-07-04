@@ -145,7 +145,7 @@ func OnlineHandler(mdm *Modem) (HandlerFunc, error) {
 	if err != nil {
 		return nil, err
 	}
-	if mdm.line.Busy() {
+	if mdm.line.Established() {
 		mdm.setDataMode(true)
 	}
 	return mdm.Parse()

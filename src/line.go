@@ -19,7 +19,9 @@ type Line struct {
 	Data     chan []byte
 	Response chan *ModemResponseError
 
-	state    int
+	state   int
+	ringing bool
+
 	paused   bool
 	raw      bool
 	terminal NVT
@@ -29,6 +31,7 @@ func NewLine(address string) (*Line, error) {
 	var err error
 	conn := Line{}
 	conn.state = LineOnHook
+	conn.ringing = false
 	conn.raw = false
 	conn.paused = true
 	conn.Data = make(chan []byte)
@@ -87,6 +90,7 @@ func (l *Line) answerCall(conn net.Conn) bool {
 func (l *Line) accept() {
 accept:
 	for {
+		l.ringing = false
 		conn, err := l.Listener.Accept()
 		if err != nil {
 			break
@@ -94,6 +98,7 @@ accept:
 		if l.Busy() {
 			conn.Close()
 		} else {
+			l.ringing = true
 			if l.answerCall(conn) {
 				l.Response <- NewResponse(Connect, "Connecting to remote host")
 				continue accept
@@ -117,7 +122,7 @@ accept:
 }
 
 func (l *Line) Dial(address string, timeout byte) error {
-	if l.Busy() || l.OffHook() {
+	if l.Busy() {
 		return NewResponse(Busy, "Line Busy")
 	}
 	playAudio("dial.wav", nil)
@@ -177,6 +182,14 @@ func (l *Line) OffHook() bool {
 	return l.state == LineOffHook
 }
 
-func (l *Line) Busy() bool {
+func (l *Line) Ringing() bool {
+	return l.ringing
+}
+
+func (l *Line) Established() bool {
 	return l.state == LineInUse
+}
+
+func (l *Line) Busy() bool {
+	return l.Ringing() || l.Established()
 }
