@@ -152,11 +152,16 @@ func OnlineHandler(mdm *Modem) (HandlerFunc, error) {
 }
 
 func HangupHandler(mdm *Modem) (HandlerFunc, error) {
-	_, err := mdm.getNextInt(0, 1, false, 0)
+	mode, err := mdm.getNextInt(0, 1, false, 0)
 	if err != nil {
 		return nil, err
 	}
-	mdm.line.Hangup()
+	switch mode {
+	case 0:
+		mdm.line.Hangup()
+	case 1:
+		mdm.line.Pickup()
+	}
 	return mdm.Parse()
 }
 
