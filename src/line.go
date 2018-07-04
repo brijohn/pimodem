@@ -63,7 +63,9 @@ func (l *Line) readRemote() {
 				}
 			} else {
 				time.Sleep(time.Millisecond * 100)
-				l.Response <- NewResponse(NoCarrier, err.Error())
+				if l.Established() {
+					l.Response <- NewResponse(NoCarrier, err.Error())
+				}
 				break
 			}
 		} else {
