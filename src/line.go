@@ -116,14 +116,14 @@ accept:
 	}
 }
 
-func (l *Line) Dial(address string) error {
+func (l *Line) Dial(address string, timeout byte) error {
 	if l.Busy() || l.OffHook() {
 		return NewResponse(Busy, "Line Busy")
 	}
 	playAudio("dial.wav", nil)
-	conn, err := net.Dial("tcp", address)
+	conn, err := net.DialTimeout("tcp", address, time.Duration(timeout)*time.Second)
 	if err != nil {
-		return NewResponse(NoCarrier, err.Error())
+		return NewResponse(NoAnswer, err.Error())
 	}
 	if !l.raw {
 		l.Conn = NewNVT(conn, make(map[TelnetOption]OptionQueue))
