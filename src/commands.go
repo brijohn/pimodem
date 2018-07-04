@@ -136,8 +136,10 @@ func DialHandler(mdm *Modem) (HandlerFunc, error) {
 }
 
 func AnswerHandler(mdm *Modem) (HandlerFunc, error) {
-	mdm.line.Pickup()
-	return mdm.Parse()
+	if mdm.line.Ringing() {
+		mdm.line.Pickup()
+	}
+	return nil, NewResponse(Ok, "Command Successful")
 }
 
 func OnlineHandler(mdm *Modem) (HandlerFunc, error) {
