@@ -46,6 +46,73 @@ func (mdm *Modem) writeRegister(reg SRegister, value byte) error {
 	return nil
 }
 
+func (mdm *Modem) setVolume(volume int) {
+	logger.Info().Int("volume", volume).Msg("Set modem volume")
+	val := mdm.readRegister(RegSpeakerResultsOptions) & VolumeMask
+	switch volume {
+	case 0:
+	case 1:
+		val |= VolumeLow
+	case 2:
+		val |= VolumeMed
+	case 3:
+		val |= VolumeHigh
+	default:
+		logger.Debug().Int("volume", volume).Msg("Invalid volume level")
+	}
+	mdm.writeRegister(RegSpeakerResultsOptions, val)
+	mdm.line.Volume = int(val & 0x3)
+}
+
+func (mdm *Modem) getVolume() int {
+	return int(mdm.readRegister(RegSpeakerResultsOptions) &^ VolumeMask)
+}
+
+func (mdm *Modem) setSpeakers(speaker int) {
+	logger.Info().Int("speaker", speaker).Msg("Set modem speaker control")
+	val := mdm.readRegister(RegSpeakerResultsOptions) & SpeakerMask
+	switch speaker {
+	case 0:
+	case 1:
+		val |= SpeakerOffCarrier
+	case 2:
+		val |= SpeakerOn
+	case 3:
+		val |= SpeakerOnHandshake
+	default:
+		logger.Debug().Int("speaker", speaker).Msg("Invalid speaker control value")
+	}
+	mdm.writeRegister(RegSpeakerResultsOptions, val)
+	mdm.line.Speaker = ((val >> 2) & 0x3) != 0
+}
+
+func (mdm *Modem) getSpeakers() int {
+	return int((mdm.readRegister(RegSpeakerResultsOptions) &^ SpeakerMask) >> 2)
+}
+
+func (mdm *Modem) setExtendedResults(results int) {
+	logger.Info().Int("rseults", results).Msg("Set extended results")
+	val := mdm.readRegister(RegSpeakerResultsOptions) & ResultsLevelMask
+	switch results {
+	case 0:
+	case 1:
+		val |= ResultsLevel1
+	case 2:
+		val |= ResultsLevel2
+	case 3:
+		val |= ResultsLevel3
+	case 4:
+		val |= ResultsLevel4
+	default:
+		logger.Debug().Int("results", results).Msg("Invalid results level")
+	}
+	mdm.writeRegister(RegSpeakerResultsOptions, val)
+}
+
+func (mdm *Modem) getExtendedResultsLevel() int {
+	return int((mdm.readRegister(RegSpeakerResultsOptions) &^ ResultsLevelMask))
+}
+
 func (mdm *Modem) readSerial() {
 	for {
 		bytes := make([]byte, 256)
@@ -65,6 +132,21 @@ func (mdm *Modem) sendCRLF() {
 func (mdm *Modem) sendResponse(e error) {
 	r, ok := e.(*ModemResponseError)
 	if ok {
+		level := mdm.getExtendedResultsLevel()
+		switch r.code {
+		case Busy:
+			if level != ResultsLevel4 && level != ResultsLevel3 {
+				r.code = NoCarrier
+			}
+		case NoDialtone:
+			if level != ResultsLevel4 && level != ResultsLevel2 {
+				r.code = NoCarrier
+			}
+		case Connect:
+			if level != 0 {
+				r = NewConnectResponseFromSpeed(38400).(*ModemResponseError)
+			}
+		}
 		options := mdm.readRegister(RegStatusOptions)
 		if options&Quiet != Quiet {
 			if options&Verbose == Verbose {

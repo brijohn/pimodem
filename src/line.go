@@ -1,7 +1,6 @@
 package main
 
 import (
-	//	"fmt"
 	"net"
 	"time"
 )
@@ -21,6 +20,8 @@ type Line struct {
 
 	state   int
 	ringing bool
+	Volume  int
+	Speaker bool
 
 	paused   bool
 	raw      bool
@@ -33,6 +34,8 @@ func NewLine(address string) (*Line, error) {
 	conn.state = LineOnHook
 	conn.ringing = false
 	conn.raw = false
+	conn.Volume = 2
+	conn.Speaker = true
 	conn.paused = true
 	conn.Data = make(chan []byte)
 	conn.Response = make(chan *ModemResponseError)
@@ -75,6 +78,13 @@ func (l *Line) readRemote() {
 	l.Disconnect()
 }
 
+func (l *Line) volumeLevel() int {
+	if !l.Speaker || l.Volume == 0 {
+		return 0
+	}
+	return l.Volume
+}
+
 func (l *Line) answerCall(conn net.Conn) bool {
 	if l.OffHook() {
 		if !l.raw {
@@ -106,7 +116,7 @@ accept:
 				continue accept
 			}
 			for r := 0; r < 15; r++ {
-				playAudio("ring.wav", nil)
+				playAudio("ring.wav", l.volumeLevel(), nil)
 				l.Response <- NewResponse(Ring, "Phone ringing; Incoming call")
 				d := 0
 				for d < 4000 {
@@ -127,7 +137,7 @@ func (l *Line) Dial(address string, timeout byte) error {
 	if l.Busy() {
 		return NewResponse(Busy, "Line Busy")
 	}
-	playAudio("dial.wav", nil)
+	playAudio("dial.wav", l.volumeLevel(), nil)
 	conn, err := net.DialTimeout("tcp", address, time.Duration(timeout)*time.Second)
 	if err != nil {
 		return NewResponse(NoAnswer, err.Error())

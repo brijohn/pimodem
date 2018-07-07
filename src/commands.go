@@ -29,6 +29,9 @@ func init() {
 		Pair{Normal, 'E'}: EchoHandler,
 		Pair{Normal, 'Q'}: QuietHandler,
 		Pair{Normal, 'V'}: VerboseHandler,
+		Pair{Normal, 'M'}: SpeakerHandler,
+		Pair{Normal, 'L'}: VolumeHandler,
+		Pair{Normal, 'X'}: ExtendedResponseHandler,
 		Pair{Normal, 'S'}: CurrentRegisterHandler,
 		Pair{Normal, '?'}: QueryRegisterHandler,
 		Pair{Normal, '='}: SetRegisterHandler,
@@ -167,6 +170,32 @@ func HangupHandler(mdm *Modem) (HandlerFunc, error) {
 	return mdm.Parse()
 }
 
+func VolumeHandler(mdm *Modem) (HandlerFunc, error) {
+	volume, err := mdm.getNextInt(0, 3, true, 0)
+	if err != nil {
+		return nil, err
+	}
+	mdm.setVolume(int(volume))
+	return mdm.Parse()
+}
+
+func SpeakerHandler(mdm *Modem) (HandlerFunc, error) {
+	speaker, err := mdm.getNextInt(0, 3, true, 0)
+	if err != nil {
+		return nil, err
+	}
+	mdm.setSpeakers(int(speaker))
+	return mdm.Parse()
+}
+
+func ExtendedResponseHandler(mdm *Modem) (HandlerFunc, error) {
+	_, err := mdm.getNextInt(0, 4, true, 0)
+	if err != nil {
+		return nil, err
+	}
+	return mdm.Parse()
+}
+
 func CurrentRegisterHandler(mdm *Modem) (HandlerFunc, error) {
 	sreg, err := mdm.getNextInt(0, 255, true, 0)
 	if err != nil {
@@ -182,7 +211,6 @@ func QueryRegisterHandler(mdm *Modem) (HandlerFunc, error) {
 	if err != nil {
 		return nil, NewResponse(Error, err.Error())
 	}
-	//str := strconv.FormatUint(uint64(val), 10)
 	str := fmt.Sprintf("%03d", val)
 	mdm.serial.Write([]byte(str))
 	return mdm.Parse()

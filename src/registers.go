@@ -29,11 +29,43 @@ const (
 	RegHangupDelay
 	RegMultiFreqToneDuration
 	RegEscapeSeqGuardTime
-	RegStatusOptions     = 14
-	RegInactivityTimeout = 30
-	RegLineMode          = 90
+	RegStatusOptions         = 14
+	RegSpeakerResultsOptions = 22
+	RegInactivityTimeout     = 30
+	RegLineMode              = 90
 )
 
+/* Flags/Masks for RegSpeakerResultsOptions Bitmap */
+const (
+	/* 0b11111100 */
+	VolumeMask = 0xfc
+	/* 0b00000001 */
+	VolumeLow = 0x01
+	/* 0b00000010 */
+	VolumeMed = 0x02
+	/* 0b00000011 */
+	VolumeHigh = 0x03
+	/* 0b11110011 */
+	SpeakerMask = 0xF3
+	/* 0b00000100 */
+	SpeakerOffCarrier = 0x04
+	/* 0b00001000 */
+	SpeakerOn = 0x08
+	/* 0b00000100 */
+	SpeakerOnHandshake = 0x0C
+	/* 0b10001111 */
+	ResultsLevelMask = 0x8F
+	/* 0b01000000 */
+	ResultsLevel1 = 0x40
+	/* 0b01010000 */
+	ResultsLevel2 = 0x50
+	/* 0b01100000 */
+	ResultsLevel3 = 0x60
+	/* 0b01110000 */
+	ResultsLevel4 = 0x70
+)
+
+/* Flags for RegStatusOptions Bitmap */
 const (
 	_ byte = 1 << iota
 	Echo
@@ -74,6 +106,7 @@ func (r *Registers) Reset() {
 	r.Write(RegEscapeSeqGuardTime, 50)
 	r.Write(RegStatusOptions, 138)
 	r.Write(RegInactivityTimeout, 0)
+	r.Write(RegSpeakerResultsOptions, 118)
 	r.Write(RegLineMode, 0)
 }
 
