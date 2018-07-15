@@ -1,0 +1,7 @@
+**/bin
+**/.gopath
+**/vendor
+*-packr.go
+*.eep
+*.dtb
+*.bck
