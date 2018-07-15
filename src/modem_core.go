@@ -298,6 +298,8 @@ func (mdm *Modem) Start() {
 						}
 						mdm.breakCount++
 					}
+				} else {
+					mdm.breakCount = 0
 				}
 				mdm.resetGuardTimer()
 			}
