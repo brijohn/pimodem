@@ -1,0 +1,13 @@
+hardware: Raspberry Pi 2
+pins:
+    ri:
+        number: 13
+    dcd:
+        number: 5
+    dtr:
+        number: 12
+        watch: 3
+    dsr:
+        number: 6
+    led2:
+        number: 10

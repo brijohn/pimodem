@@ -25,10 +25,9 @@ M = $(shell printf "\033[34;1m▶\033[0m")
 .PHONY: all
 all: fmt vendor main-packr.go | $(BASE) ; $(info $(M) building executable…) @ ## Build program binary
 	$Q cd $(BASE) && $(GO) build \
-		-tags release \
 		-gcflags '-e' \
 		-ldflags '-X main.version=$(VERSION) -X main.buildDate=$(DATE) -X main.gitCommit=${GIT_COMMIT} -X main.gitState=${GIT_STATE}' \
-		-o bin/$(PACKAGE) *.go
+		-o bin/$(PACKAGE) .
 
 $(BASE): ; $(info $(M) setting GOPATH…)
 	@mkdir -p $(dir $@)

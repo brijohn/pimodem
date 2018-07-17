@@ -26,6 +26,10 @@
 
 
 [[constraint]]
+  name = "github.com/coreos/go-systemd"
+  version = "17.0.0"
+
+[[constraint]]
   branch = "master"
   name = "github.com/faiface/beep"
 
@@ -35,19 +39,23 @@
 
 [[constraint]]
   branch = "master"
-  name = "github.com/rs/zerolog"
-
-[[constraint]]
-  branch = "master"
-  name = "github.com/coreos/go-systemd"
-
-[[constraint]]
-  branch = "master"
   name = "github.com/mkideal/cli"
+
+[[constraint]]
+  name = "github.com/rs/zerolog"
+  version = "1.8.0"
+
+[[constraint]]
+  name = "github.com/stianeikeland/go-rpio"
+  version = "4.1.0"
 
 [[constraint]]
   branch = "master"
   name = "golang.org/x/sys"
+
+[[constraint]]
+  name = "gopkg.in/yaml.v2"
+  version = "2.2.1"
 
 [prune]
   go-tests = true
