@@ -7,7 +7,7 @@ encoding utf-8
 Sheet 1 1
 Title "PiModem"
 Date "08/10/17"
-Rev "1.0"
+Rev "1.1"
 Comp ""
 Comment1 ""
 Comment2 ""
@@ -634,12 +634,12 @@ NoConn ~ 4050 5700
 $Comp
 L power:GND #PWR025
 U 1 1 598805E5
-P 3450 5500
-F 0 "#PWR025" H 3450 5250 50  0001 C CNN
-F 1 "GND" V 3455 5372 50  0000 R CNN
-F 2 "" H 3450 5500 50  0001 C CNN
-F 3 "" H 3450 5500 50  0001 C CNN
-	1    3450 5500
+P 3450 5700
+F 0 "#PWR025" H 3450 5450 50  0001 C CNN
+F 1 "GND" V 3455 5572 50  0000 R CNN
+F 2 "" H 3450 5700 50  0001 C CNN
+F 3 "" H 3450 5700 50  0001 C CNN
+	1    3450 5700
 	0    1    1    0   
 $EndComp
 Text GLabel 10200 2600 2    60   Input ~ 0
@@ -1314,53 +1314,11 @@ Wire Wire Line
 Wire Wire Line
 	900  5500 1200 5500
 Wire Wire Line
-	3450 5500 3550 5500
+	3450 5700 3550 5700
 Wire Wire Line
 	2400 5300 3550 5300
 Wire Wire Line
-	2400 5100 4050 5100
-Wire Wire Line
-	4050 5100 4050 5300
-Wire Wire Line
 	2400 5900 3150 5900
-Wire Wire Line
-	3150 5900 3150 5400
-Wire Wire Line
-	3150 5400 3550 5400
-Wire Wire Line
-	2400 6100 4350 6100
-Wire Wire Line
-	4350 6100 4350 5400
-Wire Wire Line
-	4350 5400 4050 5400
-Wire Wire Line
-	2400 5400 3050 5400
-Wire Wire Line
-	3050 5400 3050 5000
-Wire Wire Line
-	3050 5000 4150 5000
-Wire Wire Line
-	4150 5000 4150 5500
-Wire Wire Line
-	4150 5500 4050 5500
-Wire Wire Line
-	2400 6000 3400 6000
-Wire Wire Line
-	3400 6000 3400 5600
-Wire Wire Line
-	3400 5600 3550 5600
-Wire Wire Line
-	2400 5200 4250 5200
-Wire Wire Line
-	4250 5200 4250 5600
-Wire Wire Line
-	4250 5600 4050 5600
-Wire Wire Line
-	2400 5500 3000 5500
-Wire Wire Line
-	3000 5500 3000 5700
-Wire Wire Line
-	3000 5700 3550 5700
 Wire Wire Line
 	9900 2600 10200 2600
 Wire Wire Line
@@ -1637,4 +1595,56 @@ Wire Wire Line
 Wire Wire Line
 	8800 3800 8800 3700
 Connection ~ 8800 3700
+Wire Wire Line
+	2400 5100 3450 5100
+Wire Wire Line
+	3450 5100 3450 5400
+Wire Wire Line
+	3450 5400 3550 5400
+Wire Wire Line
+	3550 5500 3150 5500
+Wire Wire Line
+	3150 5500 3150 5900
+Wire Wire Line
+	3550 5600 2650 5600
+Wire Wire Line
+	2650 5600 2650 6100
+Wire Wire Line
+	2650 6100 2400 6100
+Wire Wire Line
+	3200 5400 3200 5000
+Wire Wire Line
+	3200 5000 4100 5000
+Wire Wire Line
+	4100 5000 4100 5300
+Wire Wire Line
+	4100 5300 4050 5300
+Wire Wire Line
+	2400 5400 3200 5400
+Wire Wire Line
+	4050 5400 4450 5400
+Wire Wire Line
+	4450 5400 4450 6000
+Wire Wire Line
+	2400 6000 4450 6000
+Wire Wire Line
+	4050 5500 4150 5500
+Wire Wire Line
+	4150 5500 4150 4950
+Wire Wire Line
+	4150 4950 2850 4950
+Wire Wire Line
+	2850 4950 2850 5200
+Wire Wire Line
+	2850 5200 2400 5200
+Wire Wire Line
+	3100 5500 3100 4900
+Wire Wire Line
+	3100 4900 4250 4900
+Wire Wire Line
+	4250 4900 4250 5600
+Wire Wire Line
+	4250 5600 4050 5600
+Wire Wire Line
+	2400 5500 3100 5500
 $EndSCHEMATC
