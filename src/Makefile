@@ -18,13 +18,19 @@ PKGS     = $(or $(PKG),$(shell cd $(BASE) && env GOPATH=$(GOPATH) $(GO) list ./.
 GO       = go
 GOFMT    = gofmt
 
+GOARCH     ?= $(shell $(GO) env GOARCH)
+GOOS       ?= $(shell $(GO) env GOOS)
+CGOCC      ?= $(shell $(GO) env CC)
+GOHOSTARCH  = $(shell $(GO) env GOHOSTARCH)
+GOHOSTOS    = $(shell $(GO) env GOHOSTOS)
+
 V ?= 0
 Q = $(if $(filter 1,$V),,@)
 M = $(shell printf "\033[34;1m▶\033[0m")
 
 .PHONY: all
 all: fmt vendor main-packr.go | $(BASE) ; $(info $(M) building executable…) @ ## Build program binary
-	$Q cd $(BASE) && $(GO) build \
+	$Q cd $(BASE) && CC=$(CGOCC) GOOS=$(GOOS) GOARCH=$(GOARCH) CGO_ENABLED=1 $(GO) build \
 		-gcflags '-e' \
 		-ldflags '-X main.version=$(VERSION) -X main.buildDate=$(DATE) -X main.gitCommit=${GIT_COMMIT} -X main.gitState=${GIT_STATE}' \
 		-o bin/$(PACKAGE) .
@@ -36,15 +42,15 @@ $(BASE): ; $(info $(M) setting GOPATH…)
 
 GOLINT = $(BIN)/golint
 $(BIN)/golint: | $(BASE) ; $(info $(M) building golint…)
-	$Q go get github.com/golang/lint/golint
+	$Q GOOS=$(GOHOSTOS) GOARCH=$(GOHOSTARCH) $(GO) get github.com/golang/lint/golint
 
 GODEP = $(BIN)/dep
 $(BIN)/dep: | $(BASE) ; $(info $(M) building godep…)
-	$Q go get github.com/golang/dep/cmd/dep
+	$Q GOOS=$(GOHOSTOS) GOARCH=$(GOHOSTARCH) $(GO) get github.com/golang/dep/cmd/dep
 
 GOPACKR = $(BIN)/packr
 $(BIN)/packr: | $(BASE) ; $(info $(M) building packr…)
-	$Q go get github.com/gobuffalo/packr/packr
+	$Q GOOS=$(GOHOSTOS) GOARCH=$(GOHOSTARCH) $(GO) get github.com/gobuffalo/packr/packr
 
 .PHONY: lint
 lint: vendor | $(BASE) $(GOLINT) ; $(info $(M) running golint…) @ ## Run golint
