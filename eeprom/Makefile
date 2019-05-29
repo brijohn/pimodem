@@ -18,11 +18,11 @@ eeprom: check pimodem.dtb | $(EEPMAKE) ; $(info $(M) building eeprom…) @ ## Bu
 
 .PHONY: check
 check: ; $(info $(M) checking for device tree compiler…)
-	$Q if [[ -z "$(DTC_VER)" ]]; then \
+	$Q if [ -z "$(DTC_VER)" ]; then \
 		echo "DTC not found"; \
 		exit 1; \
 	fi; \
-	if [[ $(call vercmp,1.4.3,$(DTC_VER)) != "1.4.3" ]]; then \
+	if [ $(call vercmp,1.4.3,$(DTC_VER)) != "1.4.3" ]; then \
 		echo "DTC $(DTC_VER) < 1.4.3"; \
 		exit 1; \
 	fi
