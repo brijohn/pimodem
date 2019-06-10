@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"syscall"
 	"time"
 )
 
@@ -275,6 +276,10 @@ func (mdm *Modem) Start() {
 	go mdm.readSerial()
 	for {
 		select {
+		case <-WatchPin("shutdown"):
+			h := uint(syscall.LINUX_REBOOT_CMD_HALT)
+			syscall.Sync()
+			syscall.Reboot(int(h))
 		case <-mdm.clock.GetTimer(InactivityTimer):
 			mdm.line.Hangup()
 			mdm.setDataMode(false)
