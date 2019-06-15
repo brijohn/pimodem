@@ -14,7 +14,7 @@ vercmp = $(word 1, $(sort $(1) $(2)))
 
 .PHONY: eeprom
 eeprom: check pimodem.dtb | $(EEPMAKE) ; $(info $(M) building eeprom…) @ ## Build eeprom
-	$Q $(EEPMAKE) pimodem.txt pimodem.eep pimodem.dtb -c pins.yaml 2>&1 >/dev/null
+	$Q $(EEPMAKE) pimodem.txt pimodem.eep pimodem.dtb -c pins.yaml nvmem.yaml 2>&1 >/dev/null
 
 .PHONY: check
 check: ; $(info $(M) checking for device tree compiler…)

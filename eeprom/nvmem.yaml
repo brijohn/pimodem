@@ -1,0 +1,21 @@
+24c32:
+  device: "3-00500"
+  offset: 0
+  size: 4096
+  cells:
+    passwd:
+      offset: 3584
+      len: 106
+      type: "string"
+    ip:
+      offset: 3690
+      len: 4
+      type: "ipv4"
+    dns:
+      offset: 3694
+      len: 4
+      type: "ipv4"
+    baud:
+      offset: 3698
+      len: 2
+      type: "uint16"
