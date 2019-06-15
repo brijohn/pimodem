@@ -1,5 +1,8 @@
 hardware: Raspberry Pi 2
 pins:
+    shutdown:
+        number: 11
+        watch: 2
     ri:
         number: 13
     dcd:
