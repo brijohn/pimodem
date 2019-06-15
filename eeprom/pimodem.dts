@@ -72,4 +72,37 @@
 			};
 		};
 	};
+
+	fragment@7 {
+		target-path = "/";
+		__overlay__ {
+			i2c_gpio: i2c@0 {
+				compatible = "i2c-gpio";
+				gpios = <&gpio 0 0 /* sda */
+					 &gpio 1 0 /* scl */
+					>;
+				i2c-gpio,delay-us = <2>;        /* ~100 kHz */
+				#address-cells = <1>;
+				#size-cells = <0>;
+				at24: at24@50 {
+					compatible = "atmel,24c32";
+					reg = <0x50>;
+				};
+			};
+		};
+	};
+
+	fragment@8 {
+		target-path = "/aliases";
+		__overlay__ {
+			i2c_gpio = "/i2c@0";
+		};
+	};
+
+	fragment@9 {
+		target-path = "/__symbols__";
+		__overlay__ {
+			i2c_gpio = "/i2c@0";
+		};
+	};
 };
