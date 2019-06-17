@@ -5,3 +5,4 @@
 *.eep
 *.dtb
 *.bck
+Gopkg.lock
