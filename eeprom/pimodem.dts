@@ -105,4 +105,13 @@
 			i2c_gpio = "/i2c@0";
 		};
 	};
+
+	fragment@10 {
+		target = <&act_led>;
+		__overlay__ {
+			label = "network:act";
+			linux,default-trigger = "none";
+			gpios = <&gpio 10 0>;
+		};
+	};
 };
