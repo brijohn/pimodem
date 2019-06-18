@@ -22,19 +22,20 @@ var commands map[Pair]HandlerFunc
 
 func init() {
 	commands = map[Pair]HandlerFunc{
-		Pair{Normal, 'A'}: AnswerHandler,
-		Pair{Normal, 'O'}: OnlineHandler,
-		Pair{Normal, 'H'}: HangupHandler,
-		Pair{Normal, 'D'}: DialHandler,
-		Pair{Normal, 'E'}: EchoHandler,
-		Pair{Normal, 'Q'}: QuietHandler,
-		Pair{Normal, 'V'}: VerboseHandler,
-		Pair{Normal, 'M'}: SpeakerHandler,
-		Pair{Normal, 'L'}: VolumeHandler,
-		Pair{Normal, 'X'}: ExtendedResponseHandler,
-		Pair{Normal, 'S'}: CurrentRegisterHandler,
-		Pair{Normal, '?'}: QueryRegisterHandler,
-		Pair{Normal, '='}: SetRegisterHandler,
+		Pair{Normal, 'A'}:   AnswerHandler,
+		Pair{Normal, 'O'}:   OnlineHandler,
+		Pair{Normal, 'H'}:   HangupHandler,
+		Pair{Normal, 'D'}:   DialHandler,
+		Pair{Normal, 'E'}:   EchoHandler,
+		Pair{Normal, 'Q'}:   QuietHandler,
+		Pair{Normal, 'V'}:   VerboseHandler,
+		Pair{Normal, 'M'}:   SpeakerHandler,
+		Pair{Normal, 'L'}:   VolumeHandler,
+		Pair{Normal, 'X'}:   ExtendedResponseHandler,
+		Pair{Normal, 'S'}:   CurrentRegisterHandler,
+		Pair{Normal, '?'}:   QueryRegisterHandler,
+		Pair{Normal, '='}:   SetRegisterHandler,
+		Pair{Extended, 'D'}: DTRModeHandler,
 	}
 }
 
@@ -222,5 +223,16 @@ func SetRegisterHandler(mdm *Modem) (HandlerFunc, error) {
 		return nil, err
 	}
 	mdm.reg.WriteCurrent(byte(val))
+	return mdm.Parse()
+}
+
+func DTRModeHandler(mdm *Modem) (HandlerFunc, error) {
+	mode, err := mdm.getNextInt(0, 3, true, 0)
+	if err != nil {
+		return nil, err
+	}
+	val := mdm.readRegister(RegGeneralBitmapOptions) & 0xE7
+	val |= (mode << 3)
+	mdm.writeRegister(RegGeneralBitmapOptions, val)
 	return mdm.Parse()
 }

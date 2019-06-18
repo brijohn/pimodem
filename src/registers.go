@@ -30,7 +30,9 @@ const (
 	RegMultiFreqToneDuration
 	RegEscapeSeqGuardTime
 	RegStatusOptions         = 14
+	RegGeneralBitmapOptions  = 21
 	RegSpeakerResultsOptions = 22
+	RegDelayToDTR            = 25
 	RegInactivityTimeout     = 30
 	RegLineMode              = 90
 )
@@ -106,7 +108,9 @@ func (r *Registers) Reset() {
 	r.Write(RegEscapeSeqGuardTime, 50)
 	r.Write(RegStatusOptions, 138)
 	r.Write(RegInactivityTimeout, 0)
+	r.Write(RegGeneralBitmapOptions, 52)
 	r.Write(RegSpeakerResultsOptions, 118)
+	r.Write(RegDelayToDTR, 5)
 	r.Write(RegLineMode, 0)
 }
 

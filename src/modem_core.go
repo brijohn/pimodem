@@ -9,6 +9,7 @@ import (
 const (
 	InactivityTimer = iota
 	GuardTimer
+	DTRTimer
 )
 
 type Modem struct {
@@ -280,6 +281,30 @@ func (mdm *Modem) Start() {
 			h := uint(syscall.LINUX_REBOOT_CMD_HALT)
 			syscall.Sync()
 			syscall.Reboot(int(h))
+		case event := <-WatchPin("dtr"):
+			logger.Debug().Int("value", int(event.Value)).Msg("DTR event")
+			if event.Value == 1 {
+				delay := time.Duration(mdm.readRegister(RegDelayToDTR)) * 10 * time.Millisecond
+				mdm.clock.SetDuration(DTRTimer, delay)
+			} else {
+				mdm.clock.SetDuration(DTRTimer, 0)
+			}
+		case <-mdm.clock.GetTimer(DTRTimer):
+			mdm.clock.SetDuration(DTRTimer, 0)
+			mode := (mdm.readRegister(RegGeneralBitmapOptions) >> 3) & 3
+			switch mode {
+			case 0:
+				logger.Debug().Msg("DTR - Ignored")
+			case 1:
+				logger.Debug().Msg("DTR - Return to command mode")
+				mdm.setDataMode(false)
+			case 2:
+				logger.Debug().Msg("DTR - Hangup")
+				mdm.line.Hangup()
+				mdm.setDataMode(false)
+			case 3:
+				logger.Debug().Msg("DTR - Soft Reset (not implemented)")
+			}
 		case <-mdm.clock.GetTimer(InactivityTimer):
 			mdm.line.Hangup()
 			mdm.setDataMode(false)
