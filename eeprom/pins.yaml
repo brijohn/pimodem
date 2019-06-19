@@ -1,16 +1,14 @@
 hardware: Raspberry Pi 2
 pins:
-    shutdown:
-        number: 11
-        watch: 2
-    ri:
-        number: 13
-    dcd:
-        number: 5
-    dtr:
-        number: 12
-        watch: 3
-    dsr:
-        number: 6
-    led2:
-        number: 10
+  shutdown:
+    number: 11
+    watch: 2
+  ri:
+    number: 13
+  dcd:
+    number: 5
+  dtr:
+    number: 12
+    watch: 3
+  dsr:
+    number: 6

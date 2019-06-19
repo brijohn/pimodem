@@ -11,11 +11,19 @@
       offset: 3690
       len: 4
       type: "ipv4"
-    dns:
+    netmask:
       offset: 3694
       len: 4
       type: "ipv4"
-    baud:
+    gateway:
       offset: 3698
+      len: 4
+      type: "ipv4"
+    dns:
+      offset: 3702
+      len: 4
+      type: "ipv4"
+    baud:
+      offset: 3704
       len: 2
       type: "uint16"
