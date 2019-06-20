@@ -29,6 +29,7 @@ func init() {
 		Pair{Normal, 'E'}:   EchoHandler,
 		Pair{Normal, 'Q'}:   QuietHandler,
 		Pair{Normal, 'V'}:   VerboseHandler,
+		Pair{Normal, 'I'}:   InfoHandler,
 		Pair{Normal, 'M'}:   SpeakerHandler,
 		Pair{Normal, 'L'}:   VolumeHandler,
 		Pair{Normal, 'X'}:   ExtendedResponseHandler,
@@ -120,6 +121,24 @@ func VerboseHandler(mdm *Modem) (HandlerFunc, error) {
 		mdm.reg.Write(RegStatusOptions, options|Verbose)
 	} else {
 		mdm.reg.Write(RegStatusOptions, options&^Verbose)
+	}
+	return mdm.Parse()
+}
+
+func InfoHandler(mdm *Modem) (HandlerFunc, error) {
+	info := mdm.getInfo()
+	val, err := mdm.getNextInt(0, byte(len(info)-1), false, 255)
+	if err != nil {
+		return nil, err
+	}
+	if val == 255 {
+		for _, line := range info {
+			mdm.sendCRLF()
+			mdm.serial.Write([]byte(line))
+		}
+	} else if int(val) < len(info) {
+		mdm.sendCRLF()
+		mdm.serial.Write([]byte(info[val]))
 	}
 	return mdm.Parse()
 }

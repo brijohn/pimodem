@@ -192,6 +192,32 @@ func (mdm *Modem) resetGuardTimer() {
 	mdm.guardExpired = false
 }
 
+func (mdm *Modem) getInfo() []string {
+	routes := GetRoutes()
+	info := []string{
+		fmt.Sprintf("PiModem - Hayes compatable modem emulator"),
+		fmt.Sprintf("Version: %s", version),
+		fmt.Sprintf("Build: %v", buildDate),
+		fmt.Sprintf("Hash: %s", gitCommit),
+	}
+	if intf_route, ok := routes["eth0"]; ok {
+		addrs, err := intf_route.Interface.Addrs()
+		if err == nil {
+			for _, addr := range addrs {
+				info = append(info, fmt.Sprintf("IP Address: %v", addr))
+			}
+		} else {
+			info = append(info, fmt.Sprintf("IP Address: %s", err.Error()))
+		}
+		for _, route := range intf_route.Routes {
+			if route.Default {
+				info = append(info, fmt.Sprintf("Gateway: %v", route.Gateway))
+			}
+		}
+	}
+	return info
+}
+
 func NewModem(dev string, baud uint32, address string) (*Modem, error) {
 	var mdm Modem
 	var err error
