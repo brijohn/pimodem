@@ -38,7 +38,7 @@ func NewLine(address string) (*Line, error) {
 	conn.Speaker = true
 	conn.paused = true
 	conn.Data = make(chan []byte)
-	conn.Response = make(chan *ModemResponseError)
+	conn.Response = make(chan *ModemResponseError, 1)
 	conn.Listener, err = net.Listen("tcp", address)
 	if err != nil {
 		return nil, err
@@ -133,23 +133,25 @@ accept:
 	}
 }
 
-func (l *Line) Dial(address string, timeout byte) error {
+func (l *Line) Dial(address string, timeout byte) {
 	if l.Busy() {
-		return NewResponse(Busy, "Line Busy")
-	}
-	playAudio("v34-33600bps.wav", l.volumeLevel(), nil)
-	conn, err := net.DialTimeout("tcp", address, time.Duration(timeout)*time.Second)
-	if err != nil {
-		return NewResponse(NoAnswer, err.Error())
-	}
-	if !l.raw {
-		l.Conn = NewNVT(conn, make(map[TelnetOption]OptionQueue))
+		l.Response <- NewResponse(Busy, "Line Busy")
 	} else {
-		l.Conn = conn
+		playAudio("v34-33600bps.wav", l.volumeLevel(), nil)
+		conn, err := net.DialTimeout("tcp", address, time.Duration(timeout)*time.Second)
+		if err != nil {
+			l.Response <- NewResponse(NoAnswer, err.Error())
+		} else {
+			if !l.raw {
+				l.Conn = NewNVT(conn, make(map[TelnetOption]OptionQueue))
+			} else {
+				l.Conn = conn
+			}
+			l.state = LineInUse
+			l.Response <- NewResponse(Connect, "Connecting to remote host")
+			go l.readRemote()
+		}
 	}
-	l.state = LineInUse
-	go l.readRemote()
-	return nil
 }
 
 func (l *Line) Hangup() {

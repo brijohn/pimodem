@@ -149,13 +149,9 @@ func DialHandler(mdm *Modem) (HandlerFunc, error) {
 		_, number = mdm.Command[0], string(mdm.Command[1:])
 		mdm.Command = []byte{}
 		mdm.line.SetRaw(mdm.readRegister(RegLineMode) != 0)
-		err := mdm.line.Dial(number, mdm.readRegister(RegWaitForCarrierDelay))
-		if err != nil {
-			return nil, err
-		}
-		mdm.setDataMode(true)
+		mdm.line.Dial(number, mdm.readRegister(RegWaitForCarrierDelay))
 	}
-	return nil, NewResponse(Connect, "Connecting to remote host")
+	return nil, nil
 }
 
 func AnswerHandler(mdm *Modem) (HandlerFunc, error) {
