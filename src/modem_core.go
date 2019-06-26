@@ -306,6 +306,9 @@ func (mdm *Modem) Start() {
 	logger.Info().Str("version", version).Msg("Starting PiModem")
 	logger.Info().Str("date", buildDate).Str("commit", gitCommit).Msg("Build")
 	go mdm.readSerial()
+	if mdm.readRegister(RegGeneralBitmapOptions)&0x20 == 0 {
+		AssertPin("dcd")
+	}
 	for {
 		select {
 		case <-WatchPin("shutdown"):
@@ -373,8 +376,12 @@ func (mdm *Modem) Start() {
 			mdm.sendResponse(response)
 			if response.code == Connect {
 				mdm.setDataMode(true)
+				AssertPin("dcd")
 			} else if response.code == NoCarrier {
 				mdm.setDataMode(false)
+				if mdm.readRegister(RegGeneralBitmapOptions)&0x20 == 0x20 {
+					DeassertPin("dcd")
+				}
 			} else if response.code == Ring {
 				autoAnswer := mdm.readRegister(RegAutoAnswer)
 				if autoAnswer > 0 {

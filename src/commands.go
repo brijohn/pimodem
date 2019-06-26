@@ -36,6 +36,7 @@ func init() {
 		Pair{Normal, 'S'}:   CurrentRegisterHandler,
 		Pair{Normal, '?'}:   QueryRegisterHandler,
 		Pair{Normal, '='}:   SetRegisterHandler,
+		Pair{Extended, 'C'}: DCDModeHandler,
 		Pair{Extended, 'D'}: DTRModeHandler,
 	}
 }
@@ -238,6 +239,24 @@ func SetRegisterHandler(mdm *Modem) (HandlerFunc, error) {
 		return nil, err
 	}
 	mdm.reg.WriteCurrent(byte(val))
+	return mdm.Parse()
+}
+
+func DCDModeHandler(mdm *Modem) (HandlerFunc, error) {
+	mode, err := mdm.getNextInt(0, 1, true, 0)
+	if err != nil {
+		return nil, err
+	}
+	val := mdm.readRegister(RegGeneralBitmapOptions) & 0xDF
+	val |= (mode << 5)
+	mdm.writeRegister(RegGeneralBitmapOptions, val)
+	if mode == 0 {
+		AssertPin("dcd")
+	} else {
+		if !mdm.line.Established() {
+			DeassertPin("dcd")
+		}
+	}
 	return mdm.Parse()
 }
 
