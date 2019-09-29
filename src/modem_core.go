@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"strings"
 	"syscall"
 	"time"
 )
@@ -200,8 +201,12 @@ func (mdm *Modem) getInfo() []string {
 		fmt.Sprintf("Build: %v", buildDate),
 		fmt.Sprintf("Hash: %s", gitCommit),
 	}
-	if intf_route, ok := routes["eth0"]; ok {
-		addrs, err := intf_route.Interface.Addrs()
+	for name, intf := range routes {
+		if !strings.HasPrefix(name, "eth") && !strings.HasPrefix(name, "wlan") {
+			continue
+		}
+		info = append(info, fmt.Sprintf("Interface: %s", name))
+		addrs, err := intf.Interface.Addrs()
 		if err == nil {
 			for _, addr := range addrs {
 				info = append(info, fmt.Sprintf("IP Address: %v", addr))
@@ -209,7 +214,7 @@ func (mdm *Modem) getInfo() []string {
 		} else {
 			info = append(info, fmt.Sprintf("IP Address: %s", err.Error()))
 		}
-		for _, route := range intf_route.Routes {
+		for _, route := range intf.Routes {
 			if route.Default {
 				info = append(info, fmt.Sprintf("Gateway: %v", route.Gateway))
 			}
