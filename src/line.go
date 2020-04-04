@@ -137,7 +137,7 @@ func (l *Line) Dial(address string, timeout byte) error {
 	if l.Busy() {
 		return NewResponse(Busy, "Line Busy")
 	}
-	playAudio("dial.wav", l.volumeLevel(), nil)
+	playAudio("v34-33600bps.wav", l.volumeLevel(), nil)
 	conn, err := net.DialTimeout("tcp", address, time.Duration(timeout)*time.Second)
 	if err != nil {
 		return NewResponse(NoAnswer, err.Error())
