@@ -314,7 +314,7 @@ func (mdm *Modem) Start() {
 			syscall.Reboot(int(h))
 		case event := <-WatchPin("dtr"):
 			logger.Debug().Int("value", int(event.Value)).Msg("DTR event")
-			if event.Value == 1 {
+			if event.Value == 0 {
 				delay := time.Duration(mdm.readRegister(RegDelayToDTR)) * 10 * time.Millisecond
 				mdm.clock.SetDuration(DTRTimer, delay)
 			} else {
