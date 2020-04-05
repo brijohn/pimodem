@@ -1,8 +1,14 @@
 **/bin
 **/.gopath
 **/vendor
+*.kicad_pcb-bak
+*.bak
+*.xml
 *-packr.go
 *.eep
 *.dtb
 *.bck
+*.csv
+*.xlsx
+*.patch
 Gopkg.lock
