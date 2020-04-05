@@ -1,29 +1,29 @@
-24c32:
+24c512:
   device: "3-00500"
-  offset: 0
-  size: 4096
+  offset: 8192
+  size: 57344
   cells:
     passwd:
-      offset: 3584
+      offset: 0
       len: 106
       type: "string"
     ip:
-      offset: 3690
+      offset: 106
       len: 4
       type: "ipv4"
     netmask:
-      offset: 3694
+      offset: 110
       len: 4
       type: "ipv4"
     gateway:
-      offset: 3698
+      offset: 114
       len: 4
       type: "ipv4"
     dns:
-      offset: 3702
+      offset: 118
       len: 4
       type: "ipv4"
     baud:
-      offset: 3704
+      offset: 122
       len: 2
       type: "uint16"

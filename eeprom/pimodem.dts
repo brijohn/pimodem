@@ -85,7 +85,7 @@
 				#address-cells = <1>;
 				#size-cells = <0>;
 				at24: at24@50 {
-					compatible = "atmel,24c32";
+					compatible = "atmel,24c512";
 					reg = <0x50>;
 				};
 			};
