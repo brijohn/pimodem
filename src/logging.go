@@ -67,7 +67,7 @@ func formatMessageFromEvent(buf *bytes.Buffer, event map[string]interface{}) {
 }
 
 func NewSyslogWriter() io.Writer {
-	w, _ := syslog.New(syslog.LOG_INFO, "")
+	w, _ := syslog.New(syslog.LOG_INFO|syslog.LOG_LOCAL7, "")
 	return syslogWriter{w}
 }
 
