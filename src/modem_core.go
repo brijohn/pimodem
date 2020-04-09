@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"github.com/brijohn/pimodem/nvmem"
 	"strings"
 	"syscall"
 	"time"
@@ -31,6 +32,8 @@ type Modem struct {
 	reg *Registers
 
 	CommandMode bool
+
+	nvmem *nvmem.NVMEM
 }
 
 func (mdm *Modem) readRegister(reg SRegister) byte {
@@ -223,12 +226,35 @@ func (mdm *Modem) getInfo() []string {
 	return info
 }
 
+func (mdm *Modem) ResetWithProfile(profile byte) error {
+	var err error = nil
+	if profile == 0 {
+		err = mdm.reg.Load("profile0")
+	} else if profile == 1 {
+		err = mdm.reg.Load("profile1")
+	} else {
+		err = fmt.Errorf("Invalid profile")
+	}
+	return err
+}
+
+func (mdm *Modem) StoreProfile(profile byte) error {
+	var err error = nil
+	if profile == 0 {
+		err = mdm.reg.Save("profile0")
+	} else if profile == 1 {
+		err = mdm.reg.Save("profile1")
+	} else {
+		err = fmt.Errorf("Invalid profile")
+	}
+	return err
+}
+
 func NewModem(dev string, baud uint32, address string) (*Modem, error) {
 	var mdm Modem
 	var err error
 	mdm.serialChannel = make(chan []byte)
 	mdm.CommandMode = true
-	mdm.reg = NewRegisters()
 	mdm.serial, err = OpenSerial(dev, baud)
 	if err != nil {
 		return nil, err
@@ -241,6 +267,11 @@ func NewModem(dev string, baud uint32, address string) (*Modem, error) {
 	mdm.breakCount = 0
 	mdm.guardExpired = false
 	mdm.clock = NewClock(time.Nanosecond)
+	mdm.nvmem, err = nvmem.Open("at24c512")
+	if err != nil {
+		logger.Warn().Str("device", "at24c512").Msg("Cannot open nvmem device.")
+	}
+	mdm.reg = NewRegisters(mdm.nvmem)
 	return &mdm, nil
 }
 
@@ -305,6 +336,12 @@ func (mdm *Modem) handleCommandInput(input []byte) {
 func (mdm *Modem) Start() {
 	logger.Info().Str("version", version).Msg("Starting PiModem")
 	logger.Info().Str("date", buildDate).Str("commit", gitCommit).Msg("Build")
+	if mdm.nvmem != nil {
+		powerup, err := mdm.nvmem.ReadCell("powerup")
+		if err == nil {
+			mdm.ResetWithProfile(byte(powerup.(uint16) & 0xff))
+		}
+	}
 	go mdm.readSerial()
 	if mdm.readRegister(RegGeneralBitmapOptions)&0x20 == 0 {
 		AssertPin("dcd")

@@ -33,7 +33,7 @@ all: fmt vendor main-packr.go | $(BASE) ; $(info $(M) building executable…) @ 
 	$Q cd $(BASE) && CC=$(CGOCC) GOOS=$(GOOS) GOARCH=$(GOARCH) CGO_ENABLED=1 $(GO) build \
 		-tags 'rpi' \
 		-gcflags '-e' \
-		-ldflags '-X main.version=$(VERSION) -X main.buildDate=$(DATE) -X main.gitCommit=${GIT_COMMIT} -X main.gitState=${GIT_STATE}' \
+		-ldflags '-X main.version=$(VERSION) -X main.buildDate=$(DATE) -X main.gitCommit=${GIT_COMMIT} -X main.gitState=${GIT_STATE} -X github.com/brijohn/pimodem/nvmem.Config=/proc/device-tree/hat/custom_1' \
 		-o bin/$(PACKAGE) .
 
 $(BASE): ; $(info $(M) setting GOPATH…)

@@ -33,11 +33,13 @@ func init() {
 		Pair{Normal, 'M'}:   SpeakerHandler,
 		Pair{Normal, 'L'}:   VolumeHandler,
 		Pair{Normal, 'X'}:   ExtendedResponseHandler,
+		Pair{Normal, 'Z'}:   ResetHandler,
 		Pair{Normal, 'S'}:   CurrentRegisterHandler,
 		Pair{Normal, '?'}:   QueryRegisterHandler,
 		Pair{Normal, '='}:   SetRegisterHandler,
 		Pair{Extended, 'C'}: DCDModeHandler,
 		Pair{Extended, 'D'}: DTRModeHandler,
+		Pair{Extended, 'W'}: StoreProfileHandler,
 	}
 }
 
@@ -213,6 +215,18 @@ func ExtendedResponseHandler(mdm *Modem) (HandlerFunc, error) {
 	return mdm.Parse()
 }
 
+func ResetHandler(mdm *Modem) (HandlerFunc, error) {
+	profile, err := mdm.getNextInt(0, 1, false, 0)
+	if err != nil {
+		return nil, err
+	}
+	err = mdm.ResetWithProfile(profile)
+	if err != nil {
+		return nil, NewResponse(Error, err.Error())
+	}
+	return mdm.Parse()
+}
+
 func CurrentRegisterHandler(mdm *Modem) (HandlerFunc, error) {
 	sreg, err := mdm.getNextInt(0, 255, true, 0)
 	if err != nil {
@@ -268,5 +282,17 @@ func DTRModeHandler(mdm *Modem) (HandlerFunc, error) {
 	val := mdm.readRegister(RegGeneralBitmapOptions) & 0xE7
 	val |= (mode << 3)
 	mdm.writeRegister(RegGeneralBitmapOptions, val)
+	return mdm.Parse()
+}
+
+func StoreProfileHandler(mdm *Modem) (HandlerFunc, error) {
+	profile, err := mdm.getNextInt(0, 1, true, 0)
+	if err != nil {
+		return nil, err
+	}
+	err = mdm.StoreProfile(profile)
+	if err != nil {
+		return nil, NewResponse(Error, err.Error())
+	}
 	return mdm.Parse()
 }

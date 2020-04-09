@@ -27,3 +27,15 @@ at24c512:
       offset: 122
       len: 2
       type: "uint16"
+    profile0:
+      offset: 512
+      len: 256
+      type: "bytes"
+    profile1:
+      offset: 768
+      len: 256
+      type: "bytes"
+    powerup:
+      offset: 1024
+      len: 2
+      type: "uint16"

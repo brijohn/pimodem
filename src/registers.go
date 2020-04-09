@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"github.com/brijohn/pimodem/nvmem"
 )
 
 type SRegister uint64
@@ -13,6 +14,7 @@ type Registers struct {
 		max byte
 	}
 	current SRegister
+	nvmem   *nvmem.NVMEM
 }
 
 const (
@@ -79,43 +81,55 @@ const (
 	Outgoing
 )
 
-func NewRegisters() *Registers {
+func NewRegisters(nvmem *nvmem.NVMEM) *Registers {
 	var r Registers
 	r.current = 0
-	r.Reset()
-	return &r
-}
-
-func (r *Registers) Reset() {
+	r.nvmem = nvmem
 	for i, _ := range r.reg {
 		r.reg[i].val = 0
 		r.reg[i].min = 0
 		r.reg[i].max = 255
 	}
-
-	r.Write(RegAutoAnswer, 0)
-	r.Write(RegRingCount, 0)
-	r.Write(RegEscapeSeqChar, byte('+'))
-	r.Write(RegCarriageReturnChar, byte('\r'))
-	r.Write(RegLineFeedChar, byte('\n'))
-	r.Write(RegBackspaceChar, byte('\b'))
-	r.Write(RegBlindDialWait, 4)
-	r.Write(RegWaitForCarrierDelay, 40)
-	r.Write(RegCommaDelay, 2)
-	r.Write(RegCarrierDetectResponseTime, 6)
-	r.Write(RegHangupDelay, 14)
-	r.Write(RegMultiFreqToneDuration, 95)
-	r.Write(RegEscapeSeqGuardTime, 50)
-	r.Write(RegStatusOptions, 138)
-	r.Write(RegInactivityTimeout, 0)
-	r.Write(RegGeneralBitmapOptions, 52)
-	r.Write(RegSpeakerResultsOptions, 118)
-	r.Write(RegDelayToDTR, 5)
-	r.Write(RegLineMode, 0)
+	return &r
 }
 
 func (r *Registers) SetConstraint(reg SRegister, min byte, max byte) {
+}
 
+func (r *Registers) Save(cell string) error {
+	var values [256]byte
+	if r.nvmem == nil {
+		return fmt.Errorf("NVMEM not available")
+	}
+	for i, _ := range r.reg {
+		val, err := r.Read(SRegister(i))
+		if err == nil {
+			values[i] = val
+		}
+	}
+	err := r.nvmem.WriteCell(cell, values[:])
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (r *Registers) Load(cell string) error {
+	if r.nvmem == nil {
+		return fmt.Errorf("NVMEM not available")
+	}
+	buffer, err := r.nvmem.ReadCell(cell)
+	if err != nil {
+		return err
+	}
+	values, ok := buffer.([]byte)
+	if !ok {
+		return fmt.Errorf("Cell '%s' is not a byte array", cell)
+	}
+	for i, _ := range r.reg {
+		r.Write(SRegister(i), values[i])
+	}
+	return nil
 }
 
 func (r *Registers) Write(reg SRegister, value byte) error {
