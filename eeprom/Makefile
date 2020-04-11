@@ -14,7 +14,7 @@ vercmp = $(word 1, $(sort $(1) $(2)))
 
 .PHONY: eeprom
 eeprom: check pimodem.dtb | $(EEPMAKE) ; $(info $(M) building eeprom…) @ ## Build eeprom
-	$Q $(EEPMAKE) pimodem.txt pimodem.eep pimodem.dtb -c pins.yaml nvmem.yaml 2>&1 >/dev/null
+	$Q $(EEPMAKE) -c pins.yaml -c nvmem.yaml -p raspberry -b 9600 pimodem.txt pimodem.eep pimodem.dtb 2>&1 >/dev/null
 
 .PHONY: check
 check: ; $(info $(M) checking for device tree compiler…)
@@ -29,7 +29,7 @@ check: ; $(info $(M) checking for device tree compiler…)
 
 $(BIN)/eepmake: util/eeptypes.h util/eepmake.c ; $(info $(M) building eepmake…)
 	$Q mkdir -p $(BIN)
-	$Q $(CC) util/eepmake.c -Iutil -o $(EEPMAKE) -Wno-format
+	$Q $(CC) util/eepmake.c -Iutil -o $(EEPMAKE) -Wno-format -lcrypt
 
 pimodem.dtb: pimodem.dts ; $(info $(M) building device tree blob…)
 	$Q $(DTC) -@ -q -I dts -O dtb -o $@ $<

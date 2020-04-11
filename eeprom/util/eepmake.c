@@ -3,13 +3,16 @@
  *	Usage: eepmake input_file output_file
 */
 
+#include <arpa/inet.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <crypt.h>
 #include <ctype.h>
 #include <string.h>
 #include <stdbool.h>
 #include <unistd.h>
 #include <fcntl.h>
+#include <time.h>
 
 #include "eeptypes.h"
 
@@ -22,6 +25,49 @@ struct atom_t *custom_atom, vinf_atom, gpio_atom, dt_atom;
 struct vendor_info_d* vinf;
 struct gpio_map_d* gpiomap;
 
+const char register_profile[256] = {
+	0x00, 0x00, 0x2b, 0x0d, 0x0a, 0x08, 0x04, 0x28, 0x02, 0x06, 0x0e,
+	0x5f, 0x32, 0x00, 0x8a, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x34,
+	0x76, 0x00, 0x00, 0x05, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+	0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+	0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+	0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+	0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+	0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+	0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+	0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+	0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+	0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+	0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+	0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+	0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+	0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+	0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+	0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+	0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+	0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+	0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+	0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+	0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+	0x00, 0x00, 0x00
+};
+
+struct sysconfig {
+	char passwd[106];
+	uint32_t ip;
+	uint32_t netmask;
+	uint32_t gateway;
+	uint32_t dns;
+	uint16_t baud;
+	char unused[388];
+	char profile0[256];
+	char profile1[256];
+	uint16_t powerup;
+} __attribute__((packed));
+
+
+struct sysconfig deflt = { 0 };
+
 bool product_serial_set, product_id_set, product_ver_set, vendor_set, product_set, 
 			gpio_drive_set, gpio_slew_set, gpio_hysteresis_set, gpio_power_set;
 			
@@ -30,6 +76,35 @@ bool data_receive, has_dt, receive_dt;
 char **data;
 char *current_atom; //rearranged to write out
 unsigned int data_len, custom_ct, total_size, data_cap, custom_cap;
+
+long random_at_most(long max) {
+	unsigned long num_bins = (unsigned long) max + 1;
+	unsigned long num_rand = (unsigned long) RAND_MAX + 1;
+	unsigned long bin_size = num_rand / num_bins;
+	unsigned long defect   = num_rand % num_bins;
+
+	long x;
+	do {
+		x = random();
+	} while (num_rand - defect <= (unsigned long)x);
+
+	return x/bin_size;
+}
+
+static char* hash_password(char *str) {
+	char salt[] = "$6$................";
+	const char *const seedchars =
+	    "./0123456789ABCDEFGHIJKLMNOPQRST"
+	    "UVWXYZabcdefghijklmnopqrstuvwxyz";
+
+	srandom(time(NULL));
+
+	// Turn it into printable characters from `seedchars'.
+	for (int i = 0; i < 16; i++) {
+		salt[3+i] = seedchars[random_at_most(64)];
+	}
+	return crypt(str, salt);
+}
 
 
 int write_binary(char* out) {
@@ -122,7 +197,10 @@ int write_binary(char* out) {
 		free(current_atom);
 	}
 	
-	
+	ftruncate(fileno(fp), 64 * 1024);
+	fseek(fp, 8 * 1024, SEEK_SET);
+	fwrite(&deflt, sizeof(deflt), 1, fp);
+
 	fflush(fp);
 	fclose(fp);
 	return 0;
@@ -425,10 +503,8 @@ int read_text(char* in) {
 	}
 
 	//allocating memory and setting up required atoms
-	custom_cap = 1;
-	custom_atom = (struct atom_t*) malloc(sizeof(struct atom_t) * custom_cap);
 	
-	total_size=ATOM_SIZE*2+HEADER_SIZE+VENDOR_SIZE+GPIO_SIZE;
+	total_size+=ATOM_SIZE*2+HEADER_SIZE+VENDOR_SIZE+GPIO_SIZE;
 	
 	vinf_atom.type = ATOM_VENDOR_TYPE;
 	vinf_atom.count = ATOM_VENDOR_NUM;
@@ -538,6 +614,11 @@ int read_custom(char* in) {
 	printf("Adding %lu bytes of custom data\n", size);
 	
 	total_size+=ATOM_SIZE+size;
+
+	if (custom_cap == custom_ct) {
+		custom_cap *= 2;
+		custom_atom = (struct atom_t*) realloc(custom_atom, custom_cap * sizeof(struct atom_t));
+	}
 	
 	custom_atom[custom_ct].type = ATOM_CUSTOM_TYPE;
 	custom_atom[custom_ct].count = 3+custom_ct;
@@ -559,47 +640,53 @@ err:
 }
 int main(int argc, char *argv[]) {
 	int ret;
-	int i, custom_o=0;
-	
+	int i, c;
+
 	if (argc<3) {
 		printf("Wrong input format.\n");
 		printf("Try 'eepmake input_file output_file [dt_file] [-c custom_file_1 ... custom_file_n]'\n");
 		return 0;
 	}
+
+	custom_cap = 1;
+	custom_atom = (struct atom_t*) malloc(sizeof(struct atom_t) * custom_cap);
+
+	while ((c = getopt(argc, argv, "c:p:b:")) != -1) {
+		switch(c) {
+		case 'c':
+			ret = read_custom(optarg);
+			if (ret) {
+				printf("Error reading custom file, aborting\n");
+				return 0;
+			}
+			break;
+		case 'p':
+			strncpy(deflt.passwd, hash_password("raspberry"), 106);
+			break;
+		case 'b':
+			deflt.baud = htons(atoi(optarg));
+			break;
+		default:
+			abort();
+		}
+	}
 	
-	
-	ret = read_text(argv[1]);
+	ret = read_text(argv[optind]);
 	if (ret) {
 		printf("Error reading and parsing input, aborting\n");
 		return 0;
 	}
 	
-	if (argc>3) {
-		if (strcmp(argv[3], "-c")==0) {
-			custom_o=4;
-		} else {
-			//DT file specified
-			if (dt_atom.dlen) total_size-=(ATOM_SIZE +dt_atom.dlen - CRC_SIZE);
-			ret = read_dt(argv[3]);
-			if (ret) {
-				printf("Error reading DT file, aborting\n");
-				return 0;
-			}
+	if (optind + 2 < argc) {
+		//DT file specified
+		if (dt_atom.dlen) total_size-=(ATOM_SIZE +dt_atom.dlen - CRC_SIZE);
+		ret = read_dt(argv[optind + 2]);
+		if (ret) {
+			printf("Error reading DT file, aborting\n");
+			return 0;
 		}
 	}
-	
-	if (argc>4 && strcmp(argv[4], "-c")==0) custom_o = 5;
 
-	if (custom_o)
-		for (i = custom_o; i<argc; i++) {
-			//new custom data file
-			ret = read_custom(argv[i]);
-			if (ret) {
-				printf("Error reading DT file, aborting\n");
-				return 0;
-			}
-		}
-	
 	header.signature = HEADER_SIGN;
 	header.ver = FORMAT_VERSION;
 	header.res = 0;
@@ -607,8 +694,10 @@ int main(int argc, char *argv[]) {
 	header.eeplen = total_size;
 	
 	printf("Writing out...\n");
-	
-	ret = write_binary(argv[2]);
+	memcpy(deflt.profile0, register_profile, 256);
+	memcpy(deflt.profile1, register_profile, 256);
+	deflt.powerup = htons(0x100);
+	ret = write_binary(argv[optind + 1]);
 	if (ret) {
 		printf("Error writing output\n");
 		return 0;
