@@ -3,6 +3,10 @@ pins:
   shutdown:
     number: 11
     watch: 2
+  aa:
+    number: 27
+  oh:
+    number: 22
   ri:
     number: 13
   dcd:
