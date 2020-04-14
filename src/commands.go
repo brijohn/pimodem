@@ -39,6 +39,7 @@ func init() {
 		Pair{Normal, '='}:   SetRegisterHandler,
 		Pair{Extended, 'C'}: DCDModeHandler,
 		Pair{Extended, 'D'}: DTRModeHandler,
+		Pair{Extended, 'S'}: DSROverrideHandler,
 		Pair{Extended, 'W'}: StoreProfileHandler,
 	}
 }
@@ -274,6 +275,17 @@ func DTRModeHandler(mdm *Modem) (HandlerFunc, error) {
 	}
 	val := mdm.readRegister(RegGeneralBitmapOptions) & 0xE7
 	val |= (mode << 3)
+	mdm.writeRegister(RegGeneralBitmapOptions, val)
+	return mdm.Parse()
+}
+
+func DSROverrideHandler(mdm *Modem) (HandlerFunc, error) {
+	mode, err := mdm.getNextInt(0, 1, true, 0)
+	if err != nil {
+		return nil, err
+	}
+	val := mdm.readRegister(RegGeneralBitmapOptions) & 0xBF
+	val |= (mode << 6)
 	mdm.writeRegister(RegGeneralBitmapOptions, val)
 	return mdm.Parse()
 }

@@ -54,6 +54,7 @@ func (mdm *Modem) writeRegister(reg SRegister, value byte) error {
 
 func (mdm *Modem) bitmapOptionsRegSetCallback(value byte) {
 	dcd := mdm.readRegister(RegGeneralBitmapOptions) & 0x20
+	dsr := mdm.readRegister(RegGeneralBitmapOptions) & 0x40
 	if dcd == 0 {
 		AssertPin("dcd")
 	} else {
@@ -61,6 +62,15 @@ func (mdm *Modem) bitmapOptionsRegSetCallback(value byte) {
 			DeassertPin("dcd")
 		} else {
 			AssertPin("dcd")
+		}
+	}
+	if dsr == 0 {
+		AssertPin("dsr")
+	} else {
+		if !mdm.line.Established() {
+			DeassertPin("dsr")
+		} else {
+			AssertPin("dsr")
 		}
 	}
 }
@@ -424,9 +434,13 @@ func (mdm *Modem) Start() {
 			mdm.sendResponse(response)
 			if response.code == Connect {
 				mdm.setDataMode(true)
+				AssertPin("dsr")
 				AssertPin("dcd")
 			} else if response.code == NoCarrier {
 				mdm.setDataMode(false)
+				if mdm.readRegister(RegGeneralBitmapOptions)&0x40 == 0x40 {
+					DeassertPin("dsr")
+				}
 				if mdm.readRegister(RegGeneralBitmapOptions)&0x20 == 0x20 {
 					DeassertPin("dcd")
 				}
