@@ -7,11 +7,14 @@ import (
 
 type SRegister uint64
 
+type RegWrite func(value byte)
+
 type Registers struct {
 	reg [256]struct {
-		val byte
-		min byte
-		max byte
+		val     byte
+		min     byte
+		max     byte
+		handler RegWrite
 	}
 	current SRegister
 	nvmem   *nvmem.NVMEM
@@ -96,6 +99,10 @@ func NewRegisters(nvmem *nvmem.NVMEM) *Registers {
 func (r *Registers) SetConstraint(reg SRegister, min byte, max byte) {
 }
 
+func (r *Registers) SetCallback(reg SRegister, handler RegWrite) {
+	r.reg[reg].handler = handler
+}
+
 func (r *Registers) Save(cell string) error {
 	var values [256]byte
 	if r.nvmem == nil {
@@ -140,6 +147,9 @@ func (r *Registers) Write(reg SRegister, value byte) error {
 		return fmt.Errorf("Value %d of register %d out of range: must be between %d and %d", value, reg, r.reg[reg].min, r.reg[reg].max)
 	}
 	r.reg[reg].val = value
+	if r.reg[reg].handler != nil {
+		r.reg[reg].handler(value)
+	}
 	return nil
 }
 

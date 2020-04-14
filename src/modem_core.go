@@ -52,6 +52,19 @@ func (mdm *Modem) writeRegister(reg SRegister, value byte) error {
 	return nil
 }
 
+func (mdm *Modem) bitmapOptionsRegSetCallback(value byte) {
+	dcd := mdm.readRegister(RegGeneralBitmapOptions) & 0x20
+	if dcd == 0 {
+		AssertPin("dcd")
+	} else {
+		if !mdm.line.Established() {
+			DeassertPin("dcd")
+		} else {
+			AssertPin("dcd")
+		}
+	}
+}
+
 func (mdm *Modem) setVolume(volume int) {
 	logger.Info().Int("volume", volume).Msg("Set modem volume")
 	val := mdm.readRegister(RegSpeakerResultsOptions) & VolumeMask
@@ -272,6 +285,7 @@ func NewModem(dev string, baud uint32, address string) (*Modem, error) {
 		logger.Warn().Str("device", "at24c512").Msg("Cannot open nvmem device.")
 	}
 	mdm.reg = NewRegisters(mdm.nvmem)
+	mdm.reg.SetCallback(RegGeneralBitmapOptions, mdm.bitmapOptionsRegSetCallback)
 	return &mdm, nil
 }
 
@@ -343,9 +357,6 @@ func (mdm *Modem) Start() {
 		}
 	}
 	go mdm.readSerial()
-	if mdm.readRegister(RegGeneralBitmapOptions)&0x20 == 0 {
-		AssertPin("dcd")
-	}
 	for {
 		select {
 		case <-WatchPin("shutdown"):

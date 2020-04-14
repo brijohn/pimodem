@@ -264,13 +264,6 @@ func DCDModeHandler(mdm *Modem) (HandlerFunc, error) {
 	val := mdm.readRegister(RegGeneralBitmapOptions) & 0xDF
 	val |= (mode << 5)
 	mdm.writeRegister(RegGeneralBitmapOptions, val)
-	if mode == 0 {
-		AssertPin("dcd")
-	} else {
-		if !mdm.line.Established() {
-			DeassertPin("dcd")
-		}
-	}
 	return mdm.Parse()
 }
 
