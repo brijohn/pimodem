@@ -52,6 +52,14 @@ func (mdm *Modem) writeRegister(reg SRegister, value byte) error {
 	return nil
 }
 
+func (mdm *Modem) autoAnswerRegSetCallback(value byte) {
+	if value == 0 {
+		DeassertPin("aa")
+	} else {
+		AssertPin("aa")
+	}
+}
+
 func (mdm *Modem) bitmapOptionsRegSetCallback(value byte) {
 	dcd := mdm.readRegister(RegGeneralBitmapOptions) & 0x20
 	dsr := mdm.readRegister(RegGeneralBitmapOptions) & 0x40
@@ -296,6 +304,7 @@ func NewModem(dev string, baud uint32, address string) (*Modem, error) {
 	}
 	mdm.reg = NewRegisters(mdm.nvmem)
 	mdm.reg.SetCallback(RegGeneralBitmapOptions, mdm.bitmapOptionsRegSetCallback)
+	mdm.reg.SetCallback(RegAutoAnswer, mdm.autoAnswerRegSetCallback)
 	return &mdm, nil
 }
 
