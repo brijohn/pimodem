@@ -7,6 +7,8 @@
 2) Mods: Copyright (c) 2012 Schleibinger Geräte Teubert u. Greim GmbH
 <info@schleibinger.com>. Blame: Jan Mercl
 
+3) PiModem Mods: Copyright (C) 2018 Brian Johnson
+
 All rights reserved.  Use of this source code is governed by a MIT-style
 license that can be found in the LICENSE file.
 
