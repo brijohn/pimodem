@@ -10,9 +10,9 @@ Date "2019-06-18"
 Rev "1.0"
 Comp ""
 Comment1 ""
-Comment2 ""
-Comment3 ""
-Comment4 ""
+Comment2 "License: GPLv2"
+Comment3 "Brian Johnson"
+Comment4 "Copyright (c) 2019"
 $EndDescr
 $Comp
 L Connector_Generic:Conn_02x05_Odd_Even J1

@@ -1,0 +1,3 @@
+(fp_lib_table
+  (lib (name led_board)(type KiCad)(uri /home/bjohnson/Development/git/pimodem.build/pimodem/kicad/led_board)(options "")(descr ""))
+)

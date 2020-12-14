@@ -7,12 +7,12 @@ encoding utf-8
 Sheet 1 1
 Title "PiModem"
 Date "2020-04-05"
-Rev "1.2"
+Rev "1.3"
 Comp ""
 Comment1 ""
-Comment2 ""
-Comment3 ""
-Comment4 ""
+Comment2 "License: GPLv2"
+Comment3 "Brian Johnson"
+Comment4 "Copyright (c) 2017-2020"
 $EndDescr
 $Comp
 L pimodem:LTC2951 U1

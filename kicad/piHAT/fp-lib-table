@@ -1,3 +1,4 @@
 (fp_lib_table
   (lib (name adafruit)(type KiCad)(uri ${KIPRJMOD}/adafruit.pretty)(options "")(descr "Adafruit footprints"))
+  (lib (name piHAT)(type KiCad)(uri /home/bjohnson/Development/git/pimodem.build/pimodem/kicad/piHAT)(options "")(descr ""))
 )
